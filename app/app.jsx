@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-import StepButton from 'step_button';
+import StepMatrix from 'step_matrix';
 
 // Load foundation
 $(document).foundation();
@@ -10,6 +10,6 @@ $(document).foundation();
 require('style!css!sass!applicationStyles');
 
 ReactDOM.render(
-  <StepButton />,
+  <StepMatrix />,
   document.querySelector('.container')
 );

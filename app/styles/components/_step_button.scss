@@ -2,18 +2,23 @@
   display: flex;
   width: 50px;
   height: 50px;
-  background: $sb-off;
+  background: $sb-inactive;
   border: 1px solid $sb-border;
   border-radius: 5px;
   cursor: pointer;
   margin: 0.25rem;
 
   &:hover {
-    background: $sb-hover;
+    background: $sb-inactive-hover;
     opacity: 0.6;
   }
 }
 
 .step-button-active {
-  background: $sb-on;
+  background: $sb-active;
+
+  &:hover {
+    background: $sb-active-hover;
+    opacity: 0.6;
+  }
 }
