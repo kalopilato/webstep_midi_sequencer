@@ -9,16 +9,10 @@
   margin: 0.25rem;
 
   &:hover {
-    background: $sb-inactive-hover;
     opacity: 0.6;
   }
 }
 
 .step-button-active {
   background: $sb-active;
-
-  &:hover {
-    background: $sb-active-hover;
-    opacity: 0.6;
-  }
 }
