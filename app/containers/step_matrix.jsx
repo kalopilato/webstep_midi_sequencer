@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setMidiOutput } from 'actions';
 
-import StepButton from 'step_button';
+import StepColumn from 'step_column';
 
 class StepMatrix extends Component {
   constructor() {
@@ -8,6 +10,7 @@ class StepMatrix extends Component {
 
     this.state = {active: false}
     this.handleToggleStep = this.handleToggleStep.bind(this);
+
     this.initialiseMIDI();
   }
 
@@ -18,32 +21,36 @@ class StepMatrix extends Component {
         () => { alert("MIDI Access Denied")}
       );
     } else {
-      alert("Your browser does not support MIDI, use a real browser");
+      alert("Your browser does not support MIDI, please use a real browser");
     }
   }
 
   midiSuccess(midiAccess) {
-    if(midiAccess.outputs.size < 1){
+    var { dispatch } = this.props;
+    var outputs = midiAccess.outputs;
+
+    if(outputs.size < 1){
       return alert("You have no MIDI devices connected");
     }
-    var outputs = midiAccess.outputs;
 
     var midiOutputs = [];
     for(let output of outputs) { midiOutputs.push(output[1]) };
 
-    this.setState({ midiOutput: midiOutputs[0] });
-    console.log("Setting MIDI output device to: ", midiOutputs[0]);
+    var selectedMidiOutput = midiOutputs[0];
+
+    this.setState({ midiOutput: selectedMidiOutput });
+    console.log("Setting MIDI output device to: ", selectedMidiOutput);
   }
 
 
   sendNoteOn() {
-    var noteOnMessage = [0x90, 44 , 0x7f];
-    this.state.midiOutput.send(noteOnMessage);
+    var noteOnMessage = [0x90, 48, 0x7f]; // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
+    this.state.midiOutput.send(noteOnMessage); // 0x9F = note on, channel 16
   }
 
   sendNoteOff() {
-    var noteOffMessage = [0x80, 44, 0x7f];
-    this.state.midiOutput.send(noteOffMessage);
+    var noteOffMessage = [0x80, 48, 0x7f]; // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
+    this.state.midiOutput.send(noteOffMessage); // 0x8F = note off, channel 16
   }
 
   // playNote() {
@@ -60,11 +67,23 @@ class StepMatrix extends Component {
     this.setState({active: !this.state.active});
   }
 
+  renderColumns() {
+    const COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    return COLUMNS.map((col) => {
+      return (
+        <StepColumn key={col} />
+      );
+    });
+  }
+
   render() {
     return (
-      <StepButton active={this.state.active} onToggleStep={this.handleToggleStep}/>
+      <ul className="column-row">
+        { this.renderColumns() }
+      </ul>
     )
   }
 }
 
-export default StepMatrix;
+export default connect()(StepMatrix);

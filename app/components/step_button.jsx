@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { toggleStepButton } from 'actions';
 
 class StepButton extends Component {
   constructor() {
@@ -6,11 +8,13 @@ class StepButton extends Component {
     this.onToggleStep = this.onToggleStep.bind(this);
   }
   classNames() {
-    return `step-button ${this.props.active ? 'step-button-active' : ''}`;
+    var { active } = this.props;
+    return `step-button ${active ? 'active' : ''}`;
   }
 
   onToggleStep() {
-    this.props.onToggleStep();
+    var { dispatch } = this.props;
+    dispatch(toggleStepButton());
   }
 
   render() {
@@ -21,4 +25,10 @@ class StepButton extends Component {
   }
 }
 
-export default StepButton;
+export default connect(
+  (state) => {
+    return {
+      active: state.active
+    }
+  }
+)(StepButton);

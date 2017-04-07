@@ -1,0 +1,43 @@
+.column-row {
+  display: flex;
+  list-style: none;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.step-column {
+  display: flex;
+  list-style: none;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column-reverse;
+  border-radius: 5px;
+  justify-content: center;
+
+  &.active {
+    background: lightslategrey;
+  }
+}
+
+.step-button {
+  width: 50px;
+  height: 50px;
+  background: $sb-inactive;
+  border: 1px solid $sb-border;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+
+  &.active {
+    background: $sb-active;
+  }
+
+  &:hover {
+    opacity: 0.3;
+  }
+}
+
+ul ul {
+  margin: 0;
+}

@@ -1,0 +1,27 @@
+{
+  "midiOutputs": [
+    "Novation Circuit", ...
+  ],
+  "selectedOutput": "Novation Circuit or whatever",
+  "midiChannel": 1,     // Integer: range 1-16
+  "tempo": 120,         // Integer: range 20-200
+  "key": "C",           // Root note of scale
+  "octave": 0,          // [-3, -2, -1, 0, 1, 2, 3]
+  "scale": "major",     // ["major", "minor", ...]
+  "stepInterval": 4,    // 1/4 ... [1, 2, 4, 8]
+  "swing": 0,           // Percentage: range 0-100
+  "playing": false,     // Might need to be more complex than a binary state
+  "columns": [
+    [                   // Note array (StepButton)
+      { "note": "c", "on": "true", "length": 1 },
+      { "note": "d", "on": "false", "length": 1 },
+      ...               // Total 8 notes (western scales)
+    ],
+    [
+      { "note": "c", "on": "false", "length": 1 },
+      { "note": "d", "on": "true", "length": 1 },
+      ...
+    ],
+    ...                 // Total 8 columns (for now)
+  ]
+}
