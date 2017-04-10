@@ -7,3 +7,7 @@
 
 // Components
 @import "components/components";
+// Cleans up polluted styling
+ul ul {
+  margin: 0;
+}
