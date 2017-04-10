@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { togglePlaying, stopAndResetPosition, clearGrid } from 'actions';
 
 import PlayButton from 'play_button';
-import StopButton from 'stop_button';
-import ClearButton from 'clear_button';
+import ControlButton from 'control_button';
 
 class Controls extends Component {
   constructor() {
@@ -34,8 +33,8 @@ class Controls extends Component {
     return (
       <div className="column-row">
         <PlayButton playing={this.props.playing} onTogglePlay={this.handleTogglePlay} />
-        <StopButton onStop={this.handleStop} />
-        <ClearButton onClear={this.handleClear} />
+        <ControlButton onClick={this.handleStop} label="Stop" classes="alert hollow" />
+        <ControlButton onClick={this.handleClear} label="Clear" classes="secondary" />
       </div>
     )
   }
