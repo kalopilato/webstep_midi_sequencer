@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ControlButton from 'control_button';
 
 export default class PlayButton extends ControlButton {
