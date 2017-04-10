@@ -5,7 +5,14 @@ import StepMatrix from 'step_matrix';
 import PlayButton from 'play_button';
 import { incrementColumn } from 'actions';
 
-const MAJOR_SCALE_INTERVALS = [0, 2, 4, 5, 7, 9, 11, 12];
+const MAJOR_INTERVALS = [0, 2, 4, 5, 7, 9, 11, 12];
+const DORIAN_INTERVALS = [0, 2, 3, 5, 7, 9, 10, 12];
+const PHRYGIAN_INTERVALS = [0, 1, 3, 5, 7, 8, 10, 12];
+const LYDIAN_INTERVALS = [0, 2, 4, 6, 7, 9, 11, 12];
+const MIXOLYDIAN_INTERVALS = [0, 2, 4, 5, 7, 9, 10, 12];
+const AEOLIAN_INTERVALS = [0, 2, 3, 5, 7, 8, 10, 12];
+const LOCRIAN_INTERVALS = [0, 1, 3, 5, 6, 8, 10, 12];
+
 const MIDI_ROOT = 60;
 const TEMPO = 120;
 const STEP_TIME = 60000/TEMPO;
@@ -56,7 +63,7 @@ class Sequencer extends Component {
   }
 
   sendNoteOn(noteIndex) {
-    var note = MIDI_ROOT + MAJOR_SCALE_INTERVALS[noteIndex];
+    var note = MIDI_ROOT + LOCRIAN_INTERVALS[noteIndex];
     console.log("NOTE", note);
     var noteOnMessage = [0x90, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
     var noteOffMessage = [0x80, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
