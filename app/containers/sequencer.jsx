@@ -111,7 +111,7 @@ class Sequencer extends Component {
     return (
       <div>
         <StepMatrix />
-        <PlayButton />
+        <Controls />
       </div>
     )
   }
