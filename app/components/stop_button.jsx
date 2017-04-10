@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
-class StopButton extends Component {
+export default class StopButton extends Component {
+  onStop() {
+    this.props.onStop();
+  }
+
   render() {
     return (
-      <button className="button alert hollow" onClick={this.props.onStop()}>Stop</button>
+      <button className="button alert hollow" onClick={this.props.onStop.bind(this)}>Stop</button>
     )
   }
 }

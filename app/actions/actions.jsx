@@ -12,8 +12,20 @@ export var togglePlaying = () => {
   }
 }
 
+export var stopAndResetPosition = () => {
+  return {
+    type: 'STOP_AND_RESET'
+  }
+}
+
 export var incrementColumn = () => {
   return {
     type: 'INCREMENT_COLUMN'
+  }
+}
+
+export var clearGrid = () => {
+  return {
+    type: 'CLEAR_GRID'
   }
 }

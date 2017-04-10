@@ -1,7 +1,11 @@
+import { initialisedGrid } from '../lib/lib';
+
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
     case 'TOGGLE_PLAYING':
       return !state;
+    case 'STOP_AND_RESET':
+      return false;
     default:
       return state;
   }
@@ -11,6 +15,8 @@ export var currentColumnReducer = (state = 0, action) => {
   switch (action.type) {
     case 'INCREMENT_COLUMN':
       return state === 7 ? 0 : state + 1;
+    case 'STOP_AND_RESET':
+      return 0;
     default:
       return state;
   }
@@ -24,6 +30,8 @@ export var columnsReducer = (state = [], action) => {
       return state.slice(0, col)
                   .concat([updateColumnReducer(state[col], action)])
                   .concat(state.slice(col + 1));
+    case 'CLEAR_GRID':
+      return initialisedGrid();
     default:
       return state;
   }
