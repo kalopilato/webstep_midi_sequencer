@@ -2,24 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import StepMatrix from 'step_matrix';
-import PlayButton from 'play_button';
+import Controls from 'controls';
 import { incrementColumn } from 'actions';
 
-const NATURAL_MINOR       = [0, 2, 3, 5, 7, 8, 10, 12];
-const HARMONIC_MINOR      = [0, 2, 3, 5, 7, 8, 11, 12];
-const HUNGARIAN_MINOR     = [0, 2, 3, 6, 7, 8, 11, 12];
-const MAJOR               = [0, 2, 4, 5, 7, 9, 11, 12];
-const DORIAN              = [0, 2, 3, 5, 7, 9, 10, 12];
-const UKRANIAN_DORIAN     = [0, 2, 3, 6, 7, 9, 10, 12];
-const BEBOP_DORIAN        = [0, 3, 4, 5, 7, 9, 10, 12];
-const PHRYGIAN            = [0, 1, 3, 5, 7, 8, 10, 12];
-const LYDIAN              = [0, 2, 4, 6, 7, 9, 11, 12];
-const MIXOLYDIAN          = [0, 2, 4, 5, 7, 9, 10, 12];
-const AEOLIAN             = [0, 2, 3, 5, 7, 8, 10, 12]; // descending melodic minor scale
-const HEPTATONIA_SECONDA  = [0, 2, 3, 5, 7, 9, 11, 12]; // ascending melodic minor scale
-const LOCRIAN             = [0, 1, 3, 5, 6, 8, 10, 12];
-const MARVA               = [0, 1, 4, 6, 7, 9, 11, 12];
-const TODI                = [0, 1, 3, 6, 7, 8, 11, 12];
+import { SCALES } from '../constants';
 
 const MIDI_ROOT = 60;
 const TEMPO = 120;
@@ -71,7 +57,7 @@ class Sequencer extends Component {
   }
 
   sendNoteOn(noteIndex) {
-    var note = MIDI_ROOT + NATURAL_MINOR[noteIndex];
+    var note = MIDI_ROOT + SCALES.NATURAL_MINOR[noteIndex];
     console.log("NOTE", note);
     var noteOnMessage = [0x90, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
     var noteOffMessage = [0x80, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
