@@ -11,12 +11,19 @@ export default class ControlButton extends Component {
     this.props.onClick();
   }
 
-  render() {
-    var { classes, label } = this.props;
-    var classNames = `button ${classes}`;
+  label() {
+    return this.props.label;
+  }
 
+  classNames() {
+    return `button ${this.props.classes}`;
+  }
+
+  render() {
     return (
-      <button className={classNames} onClick={this.onClick}>{label}</button>
+      <button className={this.classNames()} onClick={this.onClick}>
+        {this.label()}
+      </button>
     )
   }
 }

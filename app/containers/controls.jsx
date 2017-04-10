@@ -32,7 +32,7 @@ class Controls extends Component {
   render() {
     return (
       <div className="column-row">
-        <PlayButton playing={this.props.playing} onTogglePlay={this.handleTogglePlay} />
+        <PlayButton onClick={this.handleTogglePlay} playing={this.props.playing} />
         <ControlButton onClick={this.handleStop} label="Stop" classes="alert hollow" />
         <ControlButton onClick={this.handleClear} label="Clear" classes="secondary" />
       </div>

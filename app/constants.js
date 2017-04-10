@@ -16,4 +16,4 @@ export const SCALES = {
   TODI:               [0, 1, 3, 6, 7, 8, 11, 12]
 }
 
-export const TOTAL_STEPS = 16;
+export const TOTAL_STEPS = 8;

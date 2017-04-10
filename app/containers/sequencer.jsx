@@ -32,7 +32,7 @@ class Sequencer extends Component {
     if(navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then(
         this.midiSuccess.bind(this),
-        () => { alert("MIDI Access Denied")}
+        () => { alert("MIDI Error: Access Denied")}
       );
     } else {
       alert("Your browser does not support MIDI, please use a real browser");

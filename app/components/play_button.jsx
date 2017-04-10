@@ -1,25 +1,14 @@
 import React, { Component } from 'react';
+import ControlButton from 'control_button';
 
-export default class PlayButton extends Component {
+export default class PlayButton extends ControlButton {
   classNames() {
     var { playing } = this.props;
     return `button ${playing ? 'secondary' : 'primary'}`;
   }
 
-  buttonLabel() {
+  label() {
     var { playing } = this.props;
     return playing ? 'Pause' : 'Play';
-  }
-
-  onTogglePlay() {
-    this.props.onTogglePlay();
-  }
-
-  render() {
-    return (
-      <button className={this.classNames()} onClick={this.onTogglePlay.bind(this)}>
-        {this.buttonLabel()}
-      </button>
-    )
   }
 }
