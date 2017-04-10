@@ -5,7 +5,7 @@ import StepMatrix from 'step_matrix';
 import PlayButton from 'play_button';
 import { incrementColumn } from 'actions';
 
-const NOTES = ['C3', 'D3', 'E3', 'F3', 'G3', 'A4', 'B4', 'C4'];
+const MAJOR_SCALE_INTERVALS = [0, 2, 4, 5, 7, 9, 11, 12];
 const MIDI_ROOT = 60;
 const TEMPO = 120;
 const STEP_TIME = 60000/TEMPO;
@@ -56,7 +56,8 @@ class Sequencer extends Component {
   }
 
   sendNoteOn(noteIndex) {
-    var note = MIDI_ROOT + noteIndex;
+    var note = MIDI_ROOT + MAJOR_SCALE_INTERVALS[noteIndex];
+    console.log("NOTE", note);
     var noteOnMessage = [0x90, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
     var noteOffMessage = [0x80, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
                                               // 0x8F = note off, channel 16
@@ -64,7 +65,7 @@ class Sequencer extends Component {
     this.state.midiOutput.send(noteOnMessage); // 0x9F = note on, channel 16
     this.timer = setTimeout(() => {
       this.state.midiOutput.send(noteOffMessage);
-    }, STEP_TIME);
+    }, STEP_TIME / 2);
   }
 
   activeRows(column) {
