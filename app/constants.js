@@ -15,3 +15,5 @@ export const SCALES = {
   MARVA:              [0, 1, 4, 6, 7, 9, 11, 12],
   TODI:               [0, 1, 3, 6, 7, 8, 11, 12]
 }
+
+export const TOTAL_STEPS = 16;

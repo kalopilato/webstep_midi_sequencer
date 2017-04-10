@@ -1,4 +1,5 @@
 import { initialisedGrid } from '../lib/lib';
+import { TOTAL_STEPS } from '../constants';
 
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
@@ -14,7 +15,7 @@ export var playingReducer = (state = false, action) => {
 export var currentColumnReducer = (state = 0, action) => {
   switch (action.type) {
     case 'INCREMENT_COLUMN':
-      return state === 7 ? 0 : state + 1;
+      return state === TOTAL_STEPS - 1 ? 0 : state + 1;
     case 'STOP_AND_RESET':
       return 0;
     default:

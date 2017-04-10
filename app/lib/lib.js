@@ -1,3 +1,5 @@
+import { TOTAL_STEPS } from '../constants';
+
 export function initialisedGrid() {
   return buildColumns();
 }
@@ -5,7 +7,7 @@ export function initialisedGrid() {
 var buildColumns = () => {
   var columns = [];
   var i;
-  for(i = 0; i < 8; i++){
+  for(i = 0; i < TOTAL_STEPS; i++){
     columns.push(buildColumn(i));
   }
   return columns;
