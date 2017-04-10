@@ -1,12 +1,7 @@
-export var toggleStepButton = () => {
+export var toggleStepButton = (col, row) => {
   return {
-    type: 'TOGGLE_STEP_BUTTON'
-  }
-}
-
-export var createColumn = (column) => {
-  return {
-    type: 'ADD_STEP_COLUMN',
-    column
+    type: 'TOGGLE_STEP_BUTTON',
+    col,
+    row
   }
 }

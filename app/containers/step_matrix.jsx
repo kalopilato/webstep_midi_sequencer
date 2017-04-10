@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setMidiOutput } from 'actions';
 
 import StepColumn from 'step_column';
 
@@ -9,9 +8,15 @@ class StepMatrix extends Component {
     super();
 
     this.state = {active: false}
-    this.handleToggleStep = this.handleToggleStep.bind(this);
-
     this.initialiseMIDI();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    var { active } = this.props;
+
+    if (prevProps.active !== active) {
+      active ? this.sendNoteOn() : this.sendNoteOff();
+    }
   }
 
   initialiseMIDI() {
@@ -62,17 +67,11 @@ class StepMatrix extends Component {
   //   }, 1000);
   // }
 
-  handleToggleStep() {
-    this.state.active ? this.sendNoteOff() : this.sendNoteOn();
-    this.setState({active: !this.state.active});
-  }
-
   renderColumns() {
-    const COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    return COLUMNS.map((col) => {
+    var { columns } = this.props
+    return columns.map((col, i) => {
       return (
-        <StepColumn key={col} />
+        <StepColumn key={i} id={i} />
       );
     });
   }
@@ -86,4 +85,6 @@ class StepMatrix extends Component {
   }
 }
 
-export default connect()(StepMatrix);
+export default connect((state) => {
+  return state;
+})(StepMatrix);
