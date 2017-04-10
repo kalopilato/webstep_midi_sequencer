@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import StepMatrix from 'step_matrix';
-import { toggleStepButton } from 'actions';
+import Sequencer from 'sequencer';
 
 var store = require('configureStore').configure();
 
@@ -14,7 +13,7 @@ require('style!css!sass!applicationStyles');
 
 ReactDOM.render(
   <Provider store={store}>
-    <StepMatrix />
+    <Sequencer />
   </Provider>,
   document.querySelector('.container')
 );

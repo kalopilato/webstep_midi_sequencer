@@ -5,3 +5,15 @@ export var toggleStepButton = (col, row) => {
     row
   }
 }
+
+export var togglePlaying = () => {
+  return {
+    type: 'TOGGLE_PLAYING'
+  }
+}
+
+export var incrementColumn = () => {
+  return {
+    type: 'INCREMENT_COLUMN'
+  }
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleStepButton, addButton } from 'actions';
+import { toggleStepButton } from 'actions';
 
 class StepButton extends Component {
   constructor({col, row, active}) {

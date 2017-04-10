@@ -1,5 +1,5 @@
 var redux = require('redux');
-var { columnsReducer } = require('reducers');
+var { columnsReducer, playingReducer, currentColumnReducer } = require('reducers');
 
 var initialState = () => {
   return {
@@ -31,7 +31,9 @@ var buildColumn = (col) => {
 
 export var configure = () => {
   var reducer = redux.combineReducers({
-    columns: columnsReducer
+    playing: playingReducer,
+    columns: columnsReducer,
+    currentColumn: currentColumnReducer
   });
 
   var store = redux.createStore(reducer, initialState(), redux.compose(
