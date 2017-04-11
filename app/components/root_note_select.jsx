@@ -12,7 +12,7 @@ export default class RootNoteSelect extends Component {
   }
 
   menuItems() {
-    return NOTES.map((note, i) => {
+    return NOTES.map((note) => {
       return (
         <MenuItem key={note} value={note} primaryText={note} />
       );

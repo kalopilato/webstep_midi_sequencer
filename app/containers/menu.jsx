@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 
 import { changeScale, changeTempo, changeOctave, changeRootNote } from 'actions';
 import ScaleSelect from 'scale_select';
-import TempoSlider from 'tempo_slider';
-import OctaveSlider from 'octave_slider';
 import RootNoteSelect from 'root_note_select';
+import SliderSelect from 'slider_select';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -45,10 +44,10 @@ class Menu extends Component {
         <div className="menu">
           <div className="row">
             <div className="small-12 columns">
-              <TempoSlider currentTempo={this.props.tempo} onTempoChange={this.handleTempoChange} />
+              <SliderSelect label="Tempo" currentVal={this.props.tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
               <RootNoteSelect rootNoteIndex={this.props.rootNote} onRootNoteChange={this.handleRootNoteChange} />
               <ScaleSelect selectedScale={this.props.scale} onScaleChange={this.handleScaleChange} />
-              <OctaveSlider currentOctave={this.props.octave} onOctaveChange={this.handleOctaveChange} />
+              <SliderSelect label="Octave" currentVal={this.props.octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             </div>
           </div>
         </div>
