@@ -57,3 +57,10 @@ export var changeRootNote = (index) => {
     payload: index
   }
 }
+
+export var changeStepValue = (stepValue) => {
+  return {
+    type: 'CHANGE_STEP_VALUE',
+    payload: stepValue
+  }
+}

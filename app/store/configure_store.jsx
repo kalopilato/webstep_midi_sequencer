@@ -7,7 +7,8 @@ var { columnsReducer,
       scaleReducer,
       tempoReducer,
       octaveReducer,
-      rootNoteReducer } = require('reducers');
+      rootNoteReducer,
+      stepValueReducer } = require('reducers');
 
 export var configure = () => {
   var reducer = redux.combineReducers({
@@ -17,7 +18,8 @@ export var configure = () => {
     currentScale: scaleReducer,
     tempo: tempoReducer,
     currentOctave: octaveReducer,
-    rootNote: rootNoteReducer
+    rootNote: rootNoteReducer,
+    stepValue: stepValueReducer
   });
 
   var initialState = {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { changeScale, changeTempo, changeOctave, changeRootNote } from 'actions';
+import { changeScale, changeTempo, changeOctave, changeRootNote, changeStepValue } from 'actions';
 import SliderSelect from 'slider_select';
-import DropDownSelect from 'dropdown_select';
+import DropdownSelect from 'dropdown_select';
 
-import { NOTES, SCALES } from '../constants';
+import { STEP_VALUES, NOTES, SCALES } from '../constants';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -17,6 +17,7 @@ class Menu extends Component {
     this.handleTempoChange = this.handleTempoChange.bind(this);
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
+    this.handleStepValueChange = this.handleStepValueChange.bind(this);
   }
 
   handleScaleChange(scale) {
@@ -36,13 +37,17 @@ class Menu extends Component {
     this.dispatchAction(changeRootNote, index);
   }
 
+  handleStepValueChange(stepValue) {
+    this.dispatchAction(changeStepValue, stepValue);
+  }
+
   dispatchAction(action, value) {
     const { dispatch } = this.props;
     dispatch(action(value));
   }
 
   render() {
-    var { scale, tempo, octave, rootNote } = this.props;
+    var { scale, tempo, octave, rootNote, stepValue } = this.props;
 
     return (
       <MuiThemeProvider>
@@ -50,8 +55,9 @@ class Menu extends Component {
           <div className="row">
             <div className="small-12 columns">
               <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
-              <DropDownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
-              <DropDownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
+              <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
+              <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
+              <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
               <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             </div>
           </div>
@@ -67,7 +73,8 @@ export default connect(
       scale: state.currentScale,
       tempo: state.tempo,
       octave: state.currentOctave,
-      rootNote: state.rootNote
+      rootNote: state.rootNote,
+      stepValue: state.stepValue
     };
   }
 )(Menu);

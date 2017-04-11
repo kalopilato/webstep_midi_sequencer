@@ -60,8 +60,8 @@ class Sequencer extends Component {
     var { currentScale, tempo, currentOctave, rootNote } = this.props;
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
     console.log("NOTE", note);
-    var noteOnMessage = [0x90, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
-    var noteOffMessage = [0x80, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
+    var noteOnMessage = [0x91, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
+    var noteOffMessage = [0x81, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
                                               // 0x8F = note off, channel 16
 
     this.state.midiOutput.send(noteOnMessage); // 0x9F = note on, channel 16
@@ -92,7 +92,7 @@ class Sequencer extends Component {
   }
 
   playLoop() {
-    var { playing, tempo } = this.props;
+    var { playing, tempo, stepValue } = this.props;
     if(playing){
       var { columns, currentColumn, dispatch } = this.props;
       dispatch(incrementColumn());
@@ -104,7 +104,7 @@ class Sequencer extends Component {
 
       this.stepTimer = setTimeout(() => {
         this.playLoop();
-      }, MINUTE / tempo);
+      }, (MINUTE / tempo) * (4 * eval(stepValue)));
     }
   }
 

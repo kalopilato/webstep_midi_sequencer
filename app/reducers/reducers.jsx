@@ -1,5 +1,5 @@
 import { initialisedGrid } from '../lib/lib';
-import { NOTES, SCALES, TOTAL_STEPS } from '../constants';
+import { NOTES, STEP_VALUES, SCALES, TOTAL_STEPS } from '../constants';
 
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
@@ -68,6 +68,15 @@ export var octaveReducer = (state = 0, action) => {
 export var rootNoteReducer = (state = 0, action) => {
   switch (action.type) {
     case 'CHANGE_ROOT_NOTE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export var stepValueReducer = (state = STEP_VALUES[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_STEP_VALUE':
       return action.payload;
     default:
       return state;
