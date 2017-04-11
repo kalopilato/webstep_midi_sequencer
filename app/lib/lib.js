@@ -6,8 +6,7 @@ export function initialisedGrid() {
 
 var buildColumns = () => {
   var columns = [];
-  var i;
-  for(i = 0; i < TOTAL_STEPS; i++){
+  for(let i = 0; i < TOTAL_STEPS; i++){
     columns.push(buildColumn(i));
   }
   return columns;
@@ -15,8 +14,7 @@ var buildColumns = () => {
 
 var buildColumn = (col) => {
   var column = [];
-  var i;
-  for(i = 0; i < 8; i++){
+  for(let i = 0; i < 8; i++){
     column.push({
       active: false,
       row: i,

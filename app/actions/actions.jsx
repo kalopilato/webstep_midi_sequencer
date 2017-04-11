@@ -51,9 +51,9 @@ export var changeOctave = (octave) => {
   }
 }
 
-export var changeKey = (key) => {
+export var changeRootNote = (index) => {
   return {
-    type: 'CHANGE_KEY',
-    payload: key
+    type: 'CHANGE_ROOT_NOTE',
+    payload: index
   }
 }

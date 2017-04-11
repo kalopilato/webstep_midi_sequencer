@@ -65,9 +65,9 @@ export var octaveReducer = (state = 0, action) => {
   }
 }
 
-export var keyReducer = (state = NOTES[0], action) => {
+export var rootNoteReducer = (state = 0, action) => {
   switch (action.type) {
-    case 'CHANGE_KEY':
+    case 'CHANGE_ROOT_NOTE':
       return action.payload;
     default:
       return state;

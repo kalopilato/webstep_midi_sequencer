@@ -14,7 +14,7 @@ export default class ScaleSelect extends Component {
   menuItems() {
     return Object.keys(SCALES).map((scale) => {
       return (
-        <MenuItem value={scale} primaryText={scale.toString()} />
+        <MenuItem key={scale} value={scale} primaryText={scale.toString()} />
       );
     });
   }

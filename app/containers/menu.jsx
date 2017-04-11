@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { changeScale, changeTempo, changeOctave, changeKey } from 'actions';
+import { changeScale, changeTempo, changeOctave, changeRootNote } from 'actions';
 import ScaleSelect from 'scale_select';
 import TempoSlider from 'tempo_slider';
 import OctaveSlider from 'octave_slider';
-import KeySelect from 'key_select';
+import RootNoteSelect from 'root_note_select';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -16,7 +16,7 @@ class Menu extends Component {
     this.handleScaleChange = this.handleScaleChange.bind(this);
     this.handleTempoChange = this.handleTempoChange.bind(this);
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
-    this.handleKeyChange = this.handleKeyChange.bind(this);
+    this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
   }
 
   handleScaleChange(scale) {
@@ -34,9 +34,9 @@ class Menu extends Component {
     dispatch(changeOctave(octave));
   }
 
-  handleKeyChange(key) {
+  handleRootNoteChange(index) {
     var { dispatch } = this.props;
-    dispatch(changeKey(key));
+    dispatch(changeRootNote(index));
   }
 
   render() {
@@ -46,7 +46,7 @@ class Menu extends Component {
           <div className="row">
             <div className="small-12 columns">
               <TempoSlider currentTempo={this.props.tempo} onTempoChange={this.handleTempoChange} />
-              <KeySelect currentKey={this.props.currentKey} onKeyChange={this.handleKeyChange} />
+              <RootNoteSelect rootNoteIndex={this.props.rootNote} onRootNoteChange={this.handleRootNoteChange} />
               <ScaleSelect selectedScale={this.props.scale} onScaleChange={this.handleScaleChange} />
               <OctaveSlider currentOctave={this.props.octave} onOctaveChange={this.handleOctaveChange} />
             </div>
@@ -63,7 +63,7 @@ export default connect(
       scale: state.currentScale,
       tempo: state.tempo,
       octave: state.currentOctave,
-      currentKey: state.currentKey
+      rootNote: state.rootNote
     };
   }
 )(Menu);

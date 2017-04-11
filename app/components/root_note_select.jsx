@@ -4,7 +4,7 @@ import { NOTES } from '../constants';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class ScaleSelect extends Component {
+export default class RootNoteSelect extends Component {
   constructor() {
     super();
 
@@ -12,7 +12,7 @@ export default class ScaleSelect extends Component {
   }
 
   menuItems() {
-    return NOTES.map((note) => {
+    return NOTES.map((note, i) => {
       return (
         <MenuItem key={note} value={note} primaryText={note} />
       );
@@ -20,15 +20,16 @@ export default class ScaleSelect extends Component {
   }
 
   onChange = (event, index, value) => {
-    this.props.onKeyChange(value);
+    this.props.onRootNoteChange(index);
   };
 
   render() {
-    var { currentKey } = this.props;
+    let { rootNoteIndex } = this.props;
+    let rootNote = NOTES[rootNoteIndex];
 
     return (
       <div className="row">
-        <SelectField floatingLabelText="Key" value={currentKey} onChange={this.onChange}>
+        <SelectField floatingLabelText="Key / Root Note" value={rootNote} onChange={this.onChange}>
           {this.menuItems()}
         </SelectField>
       </div>
