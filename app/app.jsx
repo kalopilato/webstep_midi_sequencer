@@ -19,11 +19,11 @@ injectTouchTapEvent();
 ReactDOM.render(
   <Provider store={store}>
     <div className="row">
-      <div className="large-4 columns">
+      <div className="large-3 columns">
         <Menu />
       </div>
 
-      <div className="large-8 columns">
+      <div className="large-9 columns">
         <Sequencer />
       </div>
     </div>
