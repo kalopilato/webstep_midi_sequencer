@@ -20,24 +20,25 @@ class Menu extends Component {
   }
 
   handleScaleChange(scale) {
-    const { dispatch } = this.props;
-    dispatch(changeScale(scale));
+    this.dispatchAction(changeScale, scale);
   }
 
   handleTempoChange(tempo) {
-    const { dispatch } = this.props;
-    dispatch(changeTempo(tempo));
+    this.dispatchAction(changeTempo, tempo);
   }
 
   handleOctaveChange(octave) {
-    const { dispatch } = this.props;
-    dispatch(changeOctave(octave));
+    this.dispatchAction(changeOctave, octave);
   }
 
   handleRootNoteChange(rootNote) {
+    const index = NOTES.indexOf(rootNote);
+    this.dispatchAction(changeRootNote, index);
+  }
+
+  dispatchAction(action, value) {
     const { dispatch } = this.props;
-    let index = NOTES.indexOf(rootNote);
-    dispatch(changeRootNote(index));
+    dispatch(action(value));
   }
 
   render() {
