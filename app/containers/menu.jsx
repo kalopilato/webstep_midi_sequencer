@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { changeScale, changeTempo, changeOctave, changeRootNote } from 'actions';
-import ScaleSelect from 'scale_select';
-import RootNoteSelect from 'root_note_select';
 import SliderSelect from 'slider_select';
+import DropDownSelect from 'dropdown_select';
+
+import { NOTES, SCALES } from '../constants';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -19,35 +20,38 @@ class Menu extends Component {
   }
 
   handleScaleChange(scale) {
-    var { dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch(changeScale(scale));
   }
 
   handleTempoChange(tempo) {
-    var { dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch(changeTempo(tempo));
   }
 
   handleOctaveChange(octave) {
-    var { dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch(changeOctave(octave));
   }
 
-  handleRootNoteChange(index) {
-    var { dispatch } = this.props;
+  handleRootNoteChange(rootNote) {
+    const { dispatch } = this.props;
+    let index = NOTES.indexOf(rootNote);
     dispatch(changeRootNote(index));
   }
 
   render() {
+    var { scale, tempo, octave, rootNote } = this.props;
+
     return (
       <MuiThemeProvider>
         <div className="menu">
           <div className="row">
             <div className="small-12 columns">
-              <SliderSelect label="Tempo" currentVal={this.props.tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
-              <RootNoteSelect rootNoteIndex={this.props.rootNote} onRootNoteChange={this.handleRootNoteChange} />
-              <ScaleSelect selectedScale={this.props.scale} onScaleChange={this.handleScaleChange} />
-              <SliderSelect label="Octave" currentVal={this.props.octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
+              <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
+              <DropDownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
+              <DropDownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
+              <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             </div>
           </div>
         </div>
