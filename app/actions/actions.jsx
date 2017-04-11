@@ -50,3 +50,10 @@ export var changeOctave = (octave) => {
     payload: octave
   }
 }
+
+export var changeKey = (key) => {
+  return {
+    type: 'CHANGE_KEY',
+    payload: key
+  }
+}

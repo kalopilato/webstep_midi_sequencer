@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import Sequencer from 'sequencer';
 import Menu from 'menu';
 
+import injectTouchTapEvent from 'react-tap-event-plugin';
+
 var store = require('configureStore').configure();
 
 // Load foundation
@@ -11,6 +13,8 @@ $(document).foundation();
 
 // Load App CSS
 require('style!css!sass!applicationStyles');
+
+injectTouchTapEvent();
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,3 +1,16 @@
+export const NOTES = ['C',
+                      'C# / Db',
+                      'D',
+                      'D# / Eb',
+                      'E',
+                      'F',
+                      'F# / Gb',
+                      'G',
+                      'G# / Ab',
+                      'A',
+                      'A# / Bb',
+                      'B' ]
+
 export const SCALES = {
   NATURAL_MINOR:      [0, 2, 3, 5, 7, 8, 10, 12],
   HARMONIC_MINOR:     [0, 2, 3, 5, 7, 8, 11, 12],
