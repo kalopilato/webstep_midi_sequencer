@@ -56,6 +56,15 @@ export var tempoReducer = (state = 120, action) => {
   }
 }
 
+export var octaveReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'CHANGE_OCTAVE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 var updateColumnReducer = (state, action) => {
   switch (action.type) {
     case 'TOGGLE_STEP_BUTTON':

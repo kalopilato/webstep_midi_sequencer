@@ -57,8 +57,8 @@ class Sequencer extends Component {
   }
 
   sendNoteOn(noteIndex) {
-    var { currentScale, tempo } = this.props;
-    var note = MIDI_ROOT + SCALES[currentScale][noteIndex];
+    var { currentScale, tempo, currentOctave } = this.props;
+    var note = MIDI_ROOT + (currentOctave * 12) + SCALES[currentScale][noteIndex];
     console.log("NOTE", note);
     var noteOnMessage = [0x90, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
     var noteOffMessage = [0x80, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)

@@ -43,3 +43,10 @@ export var changeTempo = (tempo) => {
     payload: tempo
   }
 }
+
+export var changeOctave = (octave) => {
+  return {
+    type: 'CHANGE_OCTAVE',
+    payload: octave
+  }
+}

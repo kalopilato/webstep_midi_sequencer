@@ -5,7 +5,8 @@ var { columnsReducer,
       playingReducer,
       currentColumnReducer,
       scaleReducer,
-      tempoReducer } = require('reducers');
+      tempoReducer,
+      octaveReducer } = require('reducers');
 
 export var configure = () => {
   var reducer = redux.combineReducers({
@@ -13,7 +14,8 @@ export var configure = () => {
     columns: columnsReducer,
     currentColumn: currentColumnReducer,
     currentScale: scaleReducer,
-    tempo: tempoReducer
+    tempo: tempoReducer,
+    currentOctave: octaveReducer
   });
 
   var initialState = {
