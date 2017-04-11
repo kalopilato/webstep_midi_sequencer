@@ -1,14 +1,19 @@
 import { initialisedGrid } from '../lib/lib';
 
 var redux = require('redux');
-var { columnsReducer, playingReducer, currentColumnReducer, scaleReducer } = require('reducers');
+var { columnsReducer,
+      playingReducer,
+      currentColumnReducer,
+      scaleReducer,
+      tempoReducer } = require('reducers');
 
 export var configure = () => {
   var reducer = redux.combineReducers({
     playing: playingReducer,
     columns: columnsReducer,
     currentColumn: currentColumnReducer,
-    currentScale: scaleReducer
+    currentScale: scaleReducer,
+    tempo: tempoReducer
   });
 
   var initialState = {

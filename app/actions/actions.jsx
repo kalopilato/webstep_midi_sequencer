@@ -36,3 +36,10 @@ export var changeScale = (scale) => {
     payload: scale
   }
 }
+
+export var changeTempo = (tempo) => {
+  return {
+    type: 'CHANGE_TEMPO',
+    payload: tempo
+  }
+}

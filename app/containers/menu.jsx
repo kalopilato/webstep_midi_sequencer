@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import SelectScale from 'select_scale';
-import { changeScale } from 'actions';
+import { changeScale, changeTempo } from 'actions';
+import ScaleSelect from 'scale_select';
+import TempoSlider from 'tempo_slider';
 
 import injectTouchTapEvent from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-import Slider from 'material-ui/Slider';
-import TextField from 'material-ui/TextField';
 
 class Menu extends Component {
   constructor(){
@@ -19,12 +17,17 @@ class Menu extends Component {
     injectTouchTapEvent();
 
     this.handleScaleChange = this.handleScaleChange.bind(this);
+    this.handleTempoChange = this.handleTempoChange.bind(this);
   }
 
   handleScaleChange(scale) {
     var { dispatch } = this.props;
-
     dispatch(changeScale(scale));
+  }
+
+  handleTempoChange(tempo) {
+    var { dispatch } = this.props;
+    dispatch(changeTempo(tempo));
   }
 
   render() {
@@ -33,9 +36,8 @@ class Menu extends Component {
         <div className="menu">
           <div className="row">
             <div className="small-12 columns">
-              <div className="row">
-                <SelectScale onScaleChange={this.handleScaleChange}/>
-              </div>
+              <TempoSlider currentTempo={this.props.tempo} onTempoChange={this.handleTempoChange} />
+              <ScaleSelect selectedScale={this.props.scale} onScaleChange={this.handleScaleChange} />
             </div>
           </div>
         </div>
@@ -46,6 +48,9 @@ class Menu extends Component {
 
 export default connect(
   (state) => {
-    return state;
+    return {
+      scale: state.currentScale,
+      tempo: state.tempo
+    };
   }
 )(Menu);

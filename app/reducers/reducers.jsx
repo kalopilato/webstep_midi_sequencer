@@ -47,6 +47,15 @@ export var scaleReducer = (state = Object.keys(SCALES)[0], action) => {
   }
 }
 
+export var tempoReducer = (state = 120, action) => {
+  switch (action.type) {
+    case 'CHANGE_TEMPO':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 var updateColumnReducer = (state, action) => {
   switch (action.type) {
     case 'TOGGLE_STEP_BUTTON':
