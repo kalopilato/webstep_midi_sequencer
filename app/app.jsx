@@ -21,7 +21,7 @@ ReactDOM.render(
 
       <div className="large-8 columns">
         <Sequencer />
-        </div>
+      </div>
     </div>
   </Provider>,
   document.querySelector('.container')

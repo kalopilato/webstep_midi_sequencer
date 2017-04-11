@@ -1,5 +1,5 @@
 import { initialisedGrid } from '../lib/lib';
-import { TOTAL_STEPS } from '../constants';
+import { SCALES, TOTAL_STEPS } from '../constants';
 
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
@@ -33,6 +33,15 @@ export var columnsReducer = (state = [], action) => {
                   .concat(state.slice(col + 1));
     case 'CLEAR_GRID':
       return initialisedGrid();
+    default:
+      return state;
+  }
+}
+
+export var scaleReducer = (state = Object.keys(SCALES)[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_SCALE':
+      return action.payload;
     default:
       return state;
   }

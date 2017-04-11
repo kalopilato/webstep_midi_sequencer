@@ -7,7 +7,6 @@ class StepColumn extends Component {
   renderNotes() {
     var { columns } = this.props;
     return columns[this.props.id].map((row) => {
-
       return (
         <StepButton key={row.row} row={row.row} col={row.col} active={row.active} />
       );

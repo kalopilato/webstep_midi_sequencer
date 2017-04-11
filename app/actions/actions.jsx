@@ -29,3 +29,10 @@ export var clearGrid = () => {
     type: 'CLEAR_GRID'
   }
 }
+
+export var changeScale = (scale) => {
+  return {
+    type: 'CHANGE_SCALE',
+    payload: scale
+  }
+}
