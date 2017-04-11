@@ -12,9 +12,9 @@ export default class ScaleSelect extends Component {
   }
 
   menuItems() {
-    return NOTES.map((note, i) => {
+    return NOTES.map((note) => {
       return (
-        <MenuItem value={i} primaryText={note} />
+        <MenuItem key={note} value={note} primaryText={note} />
       );
     });
   }
