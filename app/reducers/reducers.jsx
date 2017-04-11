@@ -83,6 +83,15 @@ export var stepValueReducer = (state = STEP_VALUES[0], action) => {
   }
 }
 
+export var swingReducer = (state = 50, action) => {
+  switch (action.type) {
+    case 'CHANGE_SWING':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 var updateColumnReducer = (state, action) => {
   switch (action.type) {
     case 'TOGGLE_STEP_BUTTON':

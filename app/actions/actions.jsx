@@ -64,3 +64,10 @@ export var changeStepValue = (stepValue) => {
     payload: stepValue
   }
 }
+
+export var changeSwing = (swing) => {
+  return {
+    type: 'CHANGE_SWING',
+    payload: swing
+  }
+}

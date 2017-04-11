@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { changeScale, changeTempo, changeOctave, changeRootNote, changeStepValue } from 'actions';
+import { changeScale,
+         changeTempo,
+         changeOctave,
+         changeRootNote,
+         changeStepValue,
+         changeSwing } from 'actions';
+
 import SliderSelect from 'slider_select';
 import DropdownSelect from 'dropdown_select';
 
@@ -18,6 +24,7 @@ class Menu extends Component {
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleStepValueChange = this.handleStepValueChange.bind(this);
+    this.handleSwingChange = this.handleSwingChange.bind(this);
   }
 
   handleScaleChange(scale) {
@@ -41,13 +48,17 @@ class Menu extends Component {
     this.dispatchAction(changeStepValue, stepValue);
   }
 
+  handleSwingChange(swing) {
+    this.dispatchAction(changeSwing, swing);
+  }
+
   dispatchAction(action, value) {
     const { dispatch } = this.props;
     dispatch(action(value));
   }
 
   render() {
-    var { scale, tempo, octave, rootNote, stepValue } = this.props;
+    var { scale, tempo, octave, rootNote, stepValue, swing } = this.props;
 
     return (
       <MuiThemeProvider>
@@ -56,6 +67,7 @@ class Menu extends Component {
             <div className="small-12 columns">
               <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
               <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
+              <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
               <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
               <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
               <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
@@ -74,7 +86,8 @@ export default connect(
       tempo: state.tempo,
       octave: state.currentOctave,
       rootNote: state.rootNote,
-      stepValue: state.stepValue
+      stepValue: state.stepValue,
+      swing: state.swing
     };
   }
 )(Menu);
