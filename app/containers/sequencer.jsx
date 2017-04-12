@@ -134,15 +134,15 @@ export default connect(
 
     return {
       playing: state.playing,
+      tempo: state.tempo,
+      stepValue: state.stepValue,
+      currentColumn: state.currentColumn,
       currentScale: state.grid1.currentScale,
       currentOctave: state.grid1.currentOctave,
       rootNote: state.grid1.rootNote,
       midiChannel: state.grid1.midiChannel,
-      tempo: state.grid1.tempo,
-      stepValue: state.grid1.stepValue,
       swing: state.grid1.swing,
       columns: state.grid1.columns,
-      currentColumn: state.grid1.currentColumn,
     }
   }
 )(Sequencer);

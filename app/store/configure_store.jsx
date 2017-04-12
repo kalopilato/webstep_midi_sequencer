@@ -15,18 +15,18 @@ var { columnsReducer,
 export var configure = () => {
   var sequencerInstanceReducer = redux.combineReducers({
     columns: columnsReducer,
-    currentColumn: currentColumnReducer,
     currentScale: scaleReducer,
-    tempo: tempoReducer,
     currentOctave: octaveReducer,
     rootNote: rootNoteReducer,
-    stepValue: stepValueReducer,
     swing: swingReducer,
     midiChannel: midiChannelReducer
   });
 
   var reducer = redux.combineReducers({
+    tempo: tempoReducer,
     playing: playingReducer,
+    currentColumn: currentColumnReducer,
+    stepValue: stepValueReducer,
     grid1: sequencerInstanceReducer
   });
 

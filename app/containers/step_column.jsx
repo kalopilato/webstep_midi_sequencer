@@ -36,8 +36,8 @@ export default connect(
   (state) => {
     return {
       playing: state.playing,
+      currentColumn: state.currentColumn,
       columns: state.grid1.columns,
-      currentColumn: state.grid1.currentColumn,
     }
   }
 )(StepColumn);
