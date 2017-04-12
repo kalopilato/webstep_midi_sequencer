@@ -26,7 +26,7 @@ export default class TempoSlider extends Component {
         </div>
 
         <div className="row">
-          <Slider style={{width: 250}} min={minVal} max={maxVal} defaultValue={currentVal} step={1} onChange={this.onChange}/>
+          <Slider style={{width: 250}} min={minVal} max={maxVal} defaultValue={currentVal} step={1} onChange={this.onChange} />
         </div>
       </div>
     )

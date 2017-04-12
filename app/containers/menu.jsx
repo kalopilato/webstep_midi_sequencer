@@ -85,13 +85,13 @@ class Menu extends Component {
 export default connect(
   (state) => {
     return {
-      scale: state.currentScale,
-      tempo: state.tempo,
-      octave: state.currentOctave,
-      rootNote: state.rootNote,
-      stepValue: state.stepValue,
-      swing: state.swing,
-      midiChannel: state.midiChannel
+      scale: state.grid1.currentScale,
+      tempo: state.grid1.tempo,
+      octave: state.grid1.currentOctave,
+      rootNote: state.grid1.rootNote,
+      stepValue: state.grid1.stepValue,
+      swing: state.grid1.swing,
+      midiChannel: state.grid1.midiChannel
     };
   }
 )(Menu);

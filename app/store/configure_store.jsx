@@ -13,8 +13,7 @@ var { columnsReducer,
       midiChannelReducer } = require('reducers');
 
 export var configure = () => {
-  var reducer = redux.combineReducers({
-    playing: playingReducer,
+  var sequencerInstanceReducer = redux.combineReducers({
     columns: columnsReducer,
     currentColumn: currentColumnReducer,
     currentScale: scaleReducer,
@@ -26,8 +25,15 @@ export var configure = () => {
     midiChannel: midiChannelReducer
   });
 
+  var reducer = redux.combineReducers({
+    playing: playingReducer,
+    grid1: sequencerInstanceReducer
+  });
+
   var initialState = {
-    columns: initialisedGrid()
+    grid1: {
+      columns: initialisedGrid()
+    }
   }
 
   var store = redux.createStore(reducer, initialState, redux.compose(

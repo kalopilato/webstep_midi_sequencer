@@ -33,6 +33,6 @@ class StepButton extends Component {
 
 export default connect(
   (state) => {
-    return state;
+    return state.grid1;
   }
 )(StepButton);

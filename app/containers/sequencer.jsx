@@ -131,6 +131,18 @@ class Sequencer extends Component {
 
 export default connect(
   (state) => {
-    return state;
+
+    return {
+      playing: state.playing,
+      currentScale: state.grid1.currentScale,
+      currentOctave: state.grid1.currentOctave,
+      rootNote: state.grid1.rootNote,
+      midiChannel: state.grid1.midiChannel,
+      tempo: state.grid1.tempo,
+      stepValue: state.grid1.stepValue,
+      swing: state.grid1.swing,
+      columns: state.grid1.columns,
+      currentColumn: state.grid1.currentColumn,
+    }
   }
 )(Sequencer);

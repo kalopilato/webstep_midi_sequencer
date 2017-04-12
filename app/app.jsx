@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import Sequencer from 'sequencer';
-import Menu from 'menu';
+
+import Main from 'main';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTouchTapEvent from 'react-tap-event-plugin';
@@ -20,15 +20,7 @@ injectTouchTapEvent();
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <div className="row">
-        <div className="large-3 columns">
-          <Menu />
-        </div>
-
-        <div className="large-9 columns">
-          <Sequencer />
-        </div>
-      </div>
+      <Main />
     </MuiThemeProvider>
   </Provider>,
   document.querySelector('.container')

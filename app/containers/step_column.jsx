@@ -34,6 +34,10 @@ class StepColumn extends Component {
 
 export default connect(
   (state) => {
-    return state;
+    return {
+      playing: state.playing,
+      columns: state.grid1.columns,
+      currentColumn: state.grid1.currentColumn,
+    }
   }
 )(StepColumn);

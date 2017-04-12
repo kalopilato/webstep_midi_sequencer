@@ -23,5 +23,7 @@ class StepMatrix extends Component {
 }
 
 export default connect((state) => {
-  return state;
+  return {
+    columns: state.grid1.columns,
+  }
 })(StepMatrix);
