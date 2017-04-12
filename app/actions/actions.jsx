@@ -71,3 +71,10 @@ export var changeSwing = (swing) => {
     payload: swing
   }
 }
+
+export var changeMidiChannel = (channel) => {
+  return {
+    type: 'CHANGE_MIDI_CHANNEL',
+    payload: channel
+  }
+}

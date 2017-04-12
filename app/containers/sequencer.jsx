@@ -5,7 +5,7 @@ import StepMatrix from 'step_matrix';
 import Controls from 'controls';
 import { incrementColumn } from 'actions';
 
-import { SCALES } from '../constants';
+import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE } from '../constants';
 
 const MIDI_ROOT = 60;
 const MINUTE = 60000;
@@ -56,15 +56,21 @@ class Sequencer extends Component {
     console.log("Setting MIDI output device to: ", selectedMidiOutput);
   }
 
+  // (http://www.ccarh.org/courses/253/handout/midiprotocol/)
   sendNoteOn(noteIndex) {
-    var { currentScale, tempo, currentOctave, rootNote } = this.props;
+    var { currentScale, tempo, currentOctave, rootNote, midiChannel } = this.props;
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
 
-    var noteOnMessage = [0x91, note, 0x7f];   // 0x91 = note on, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
-    var noteOffMessage = [0x81, note, 0x7f];  // 0x81 = note off, channel 2 (http://www.ccarh.org/courses/253/handout/midiprotocol/)
-                                              // 0x8F = note off, channel 16
+    let channel = MIDI_CHANNELS[midiChannel];
+    let noteOn = MIDI_MESSAGE_TYPE.NOTE_ON;
+    let noteOff = MIDI_MESSAGE_TYPE.NOTE_OFF;
+    var noteOnByte = parseInt(noteOn + channel, 2);
+    var noteOffByte = parseInt(noteOff + channel, 2);
 
-    this.state.midiOutput.send(noteOnMessage); // 0x9F = note on, channel 16
+    var noteOnMessage = [noteOnByte, note, 0x7f];
+    var noteOffMessage = [noteOffByte, note, 0x7f];
+
+    this.state.midiOutput.send(noteOnMessage);
     this.timer = setTimeout(() => {
       this.state.midiOutput.send(noteOffMessage);
     }, (MINUTE / tempo) / 2);

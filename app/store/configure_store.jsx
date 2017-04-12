@@ -9,7 +9,8 @@ var { columnsReducer,
       octaveReducer,
       rootNoteReducer,
       stepValueReducer,
-      swingReducer } = require('reducers');
+      swingReducer,
+      midiChannelReducer } = require('reducers');
 
 export var configure = () => {
   var reducer = redux.combineReducers({
@@ -21,7 +22,8 @@ export var configure = () => {
     currentOctave: octaveReducer,
     rootNote: rootNoteReducer,
     stepValue: stepValueReducer,
-    swing: swingReducer
+    swing: swingReducer,
+    midiChannel: midiChannelReducer
   });
 
   var initialState = {

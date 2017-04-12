@@ -1,5 +1,5 @@
 import { initialisedGrid } from '../lib/lib';
-import { NOTES, STEP_VALUES, SCALES, TOTAL_STEPS } from '../constants';
+import { NOTES, STEP_VALUES, SCALES, TOTAL_STEPS, MIDI_CHANNELS } from '../constants';
 
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
@@ -86,6 +86,15 @@ export var stepValueReducer = (state = STEP_VALUES[0], action) => {
 export var swingReducer = (state = 50, action) => {
   switch (action.type) {
     case 'CHANGE_SWING':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export var midiChannelReducer = (state = Object.keys(MIDI_CHANNELS)[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_MIDI_CHANNEL':
       return action.payload;
     default:
       return state;
