@@ -14,8 +14,6 @@ import DropdownSelect from 'dropdown_select';
 
 import { STEP_VALUES, NOTES, SCALES, MIDI_CHANNELS } from '../constants';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 class Menu extends Component {
   constructor(){
     super();
@@ -67,21 +65,19 @@ class Menu extends Component {
     var { scale, tempo, octave, rootNote, stepValue, swing, midiChannel } = this.props;
 
     return (
-      <MuiThemeProvider>
-        <div className="menu">
-          <div className="row">
-            <div className="small-12 columns">
-              <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
-              <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
-              <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
-              <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
-              <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
-              <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
-              <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
-            </div>
+      <div className="menu">
+        <div className="row">
+          <div className="small-12 columns">
+            <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
+            <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
+            <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
+            <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
+            <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
+            <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
+            <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
           </div>
         </div>
-      </MuiThemeProvider>
+      </div>
     )
   }
 }

@@ -5,17 +5,27 @@ import { createColumn } from 'actions';
 
 class StepColumn extends Component {
   renderNotes() {
-    var { columns } = this.props;
-    return columns[this.props.id].map((row) => {
+    var { columns, id } = this.props;
+
+    return columns[id].map((row) => {
       return (
         <StepButton key={row.row} row={row.row} col={row.col} active={row.active} />
       );
     });
   }
 
+  isPlaying() {
+    var { id, columns, currentColumn, playing } = this.props;
+    return ((currentColumn - 1) === id || currentColumn === 0 && id === columns.length - 1) && playing;
+  }
+
+  classes() {
+    return `grid-column ${this.isPlaying() ? 'playing' : ''}`;
+  }
+
   render() {
     return (
-      <ul className="step-column">
+      <ul className={this.classes()}>
         {this.renderNotes()}
       </ul>
     )

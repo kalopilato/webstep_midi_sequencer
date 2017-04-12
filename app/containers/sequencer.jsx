@@ -56,7 +56,7 @@ class Sequencer extends Component {
     console.log("Setting MIDI output device to: ", selectedMidiOutput);
   }
 
-  // (http://www.ccarh.org/courses/253/handout/midiprotocol/)
+  // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
   sendNoteOn(noteIndex) {
     var { currentScale, tempo, currentOctave, rootNote, midiChannel } = this.props;
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];

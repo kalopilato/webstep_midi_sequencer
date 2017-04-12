@@ -15,7 +15,7 @@ class StepMatrix extends Component {
 
   render() {
     return (
-      <ul className="column-row">
+      <ul className="sequencer-grid">
         { this.renderColumns() }
       </ul>
     )
