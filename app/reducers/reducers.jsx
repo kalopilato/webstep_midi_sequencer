@@ -23,7 +23,7 @@ export var currentColumnReducer = (state = 0, action) => {
   }
 }
 
-export var columnsReducer = (state = [], action) => {
+export var columnsReducer = (state = initialisedGrid(), action) => {
   switch (action.type) {
     case 'TOGGLE_STEP_BUTTON':
       var { col } = action;

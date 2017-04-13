@@ -27,16 +27,10 @@ export var configure = () => {
     playing: playingReducer,
     currentColumn: currentColumnReducer,
     stepValue: stepValueReducer,
-    grid1: sequencerInstanceReducer
+    grid1: sequencerInstanceReducer,
   });
 
-  var initialState = {
-    grid1: {
-      columns: initialisedGrid()
-    }
-  }
-
-  var store = redux.createStore(reducer, initialState, redux.compose(
+  var store = redux.createStore(reducer, {}, redux.compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
   ));
 
