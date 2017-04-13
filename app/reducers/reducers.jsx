@@ -24,30 +24,6 @@ export var currentColumnReducer = (state = 0, action) => {
   }
 }
 
-export var columnsReducer = (state = initialisedGrid(), action) => {
-  switch (action.type) {
-    case 'TOGGLE_STEP_BUTTON':
-      var { col } = action;
-
-      return state.slice(0, col)
-                  .concat([updateColumnReducer(state[col], action)])
-                  .concat(state.slice(col + 1));
-    case 'CLEAR_GRID':
-      return initialisedGrid();
-    default:
-      return state;
-  }
-}
-
-export var scaleReducer = (state = Object.keys(SCALES)[0], action) => {
-  switch (action.type) {
-    case 'CHANGE_SCALE':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 export var tempoReducer = (state = 120, action) => {
   switch (action.type) {
     case 'CHANGE_TEMPO':
@@ -66,15 +42,6 @@ export var octaveReducer = (state = 0, action) => {
   }
 }
 
-export var rootNoteReducer = (state = 0, action) => {
-  switch (action.type) {
-    case 'CHANGE_ROOT_NOTE':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 export var stepValueReducer = (state = STEP_VALUES[0], action) => {
   switch (action.type) {
     case 'CHANGE_STEP_VALUE':
@@ -84,23 +51,8 @@ export var stepValueReducer = (state = STEP_VALUES[0], action) => {
   }
 }
 
-export var swingReducer = (state = 50, action) => {
-  switch (action.type) {
-    case 'CHANGE_SWING':
-      return action.payload;
-    default:
-      return state;
-  }
-}
 
-export var midiChannelReducer = (state = Object.keys(MIDI_CHANNELS)[0], action) => {
-  switch (action.type) {
-    case 'CHANGE_MIDI_CHANNEL':
-      return action.payload;
-    default:
-      return state;
-  }
-}
+
 
 export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => {
   switch (action.type) {
@@ -126,8 +78,108 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => 
       return state.slice(0, grid)
                   .concat(updatedGrid)
                   .concat(state.slice(grid + 1));
+    case 'CHANGE_MIDI_CHANNEL':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, midiChannel: midiChannelReducer(grid.midiChannel, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    case 'CHANGE_OCTAVE':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, currentOctave: octaveReducer(grid.currentOctave, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    case 'CHANGE_SCALE':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, currentScale: scaleReducer(grid.currentScale, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    case 'CHANGE_ROOT_NOTE':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, rootNote: rootNoteReducer(grid.rootNote, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    case 'CHANGE_SWING':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, swing: swingReducer(grid.swing, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
     default:
       return [...state];
+  }
+}
+
+var columnsReducer = (state = initialisedGrid(), action) => {
+  switch (action.type) {
+    case 'TOGGLE_STEP_BUTTON':
+      var { col } = action;
+
+      return state.slice(0, col)
+                  .concat([updateColumnReducer(state[col], action)])
+                  .concat(state.slice(col + 1));
+    case 'CLEAR_GRID':
+      return initialisedGrid();
+    default:
+      return state;
+  }
+}
+
+var midiChannelReducer = (state = Object.keys(MIDI_CHANNELS)[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_MIDI_CHANNEL':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+var octaveReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'CHANGE_OCTAVE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+var scaleReducer = (state = Object.keys(SCALES)[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_SCALE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+var rootNoteReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'CHANGE_ROOT_NOTE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+var swingReducer = (state = 50, action) => {
+  switch (action.type) {
+    case 'CHANGE_SWING':
+      return action.payload;
+    default:
+      return state;
   }
 }
 

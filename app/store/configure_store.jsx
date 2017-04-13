@@ -15,15 +15,6 @@ var {
       gridsReducer } = require('reducers');
 
 export var configure = () => {
-  var sequencerInstanceReducer = redux.combineReducers({
-    columns: columnsReducer,
-    currentScale: scaleReducer,
-    currentOctave: octaveReducer,
-    rootNote: rootNoteReducer,
-    swing: swingReducer,
-    midiChannel: midiChannelReducer
-  });
-
   var reducer = redux.combineReducers({
     tempo: tempoReducer,
     playing: playingReducer,
