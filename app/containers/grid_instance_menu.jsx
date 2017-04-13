@@ -45,8 +45,8 @@ class GridInstanceMenu extends Component {
   }
 
   dispatchAction(action, value) {
-    const { dispatch } = this.props;
-    dispatch(action(value));
+    const { dispatch, grid } = this.props;
+    dispatch(action(value, grid));
   }
 
   render() {
@@ -71,11 +71,11 @@ class GridInstanceMenu extends Component {
 export default connect(
   (state) => {
     return {
-      scale: state.grid1.currentScale,
-      octave: state.grid1.currentOctave,
-      rootNote: state.grid1.rootNote,
-      swing: state.grid1.swing,
-      midiChannel: state.grid1.midiChannel
+      scale: state.grids[0].currentScale,
+      octave: state.grids[0].currentOctave,
+      rootNote: state.grids[0].rootNote,
+      swing: state.grids[0].swing,
+      midiChannel: state.grids[0].midiChannel
     };
   }
 )(GridInstanceMenu);

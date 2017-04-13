@@ -1,8 +1,9 @@
-export var toggleStepButton = (col, row) => {
+export var toggleStepButton = (col, row, grid) => {
   return {
     type: 'TOGGLE_STEP_BUTTON',
     col,
-    row
+    row,
+    grid
   }
 }
 
@@ -24,16 +25,18 @@ export var incrementColumn = () => {
   }
 }
 
-export var clearGrid = () => {
+export var clearGrid = (grid) => {
   return {
-    type: 'CLEAR_GRID'
+    type: 'CLEAR_GRID',
+    grid
   }
 }
 
-export var changeScale = (scale) => {
+export var changeScale = (scale, grid) => {
   return {
     type: 'CHANGE_SCALE',
-    payload: scale
+    payload: scale,
+    grid
   }
 }
 
@@ -44,17 +47,19 @@ export var changeTempo = (tempo) => {
   }
 }
 
-export var changeOctave = (octave) => {
+export var changeOctave = (octave, grid) => {
   return {
     type: 'CHANGE_OCTAVE',
-    payload: octave
+    payload: octave,
+    grid
   }
 }
 
-export var changeRootNote = (index) => {
+export var changeRootNote = (index, grid) => {
   return {
     type: 'CHANGE_ROOT_NOTE',
-    payload: index
+    payload: index,
+    grid
   }
 }
 
@@ -65,16 +70,18 @@ export var changeStepValue = (stepValue) => {
   }
 }
 
-export var changeSwing = (swing) => {
+export var changeSwing = (swing, grid) => {
   return {
     type: 'CHANGE_SWING',
-    payload: swing
+    payload: swing,
+    grid
   }
 }
 
-export var changeMidiChannel = (channel) => {
+export var changeMidiChannel = (channel, grid) => {
   return {
     type: 'CHANGE_MIDI_CHANNEL',
-    payload: channel
+    payload: channel,
+    grid
   }
 }

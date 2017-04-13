@@ -1,7 +1,8 @@
 import { initialisedGrid } from '../lib/lib';
 
 var redux = require('redux');
-var { columnsReducer,
+var {
+      columnsReducer,
       playingReducer,
       currentColumnReducer,
       scaleReducer,
@@ -10,7 +11,8 @@ var { columnsReducer,
       rootNoteReducer,
       stepValueReducer,
       swingReducer,
-      midiChannelReducer } = require('reducers');
+      midiChannelReducer,
+      gridsReducer } = require('reducers');
 
 export var configure = () => {
   var sequencerInstanceReducer = redux.combineReducers({
@@ -27,7 +29,7 @@ export var configure = () => {
     playing: playingReducer,
     currentColumn: currentColumnReducer,
     stepValue: stepValueReducer,
-    grid1: sequencerInstanceReducer,
+    grids: gridsReducer
   });
 
   var store = redux.createStore(reducer, {}, redux.compose(

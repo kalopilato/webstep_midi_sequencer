@@ -18,9 +18,9 @@ class StepButton extends Component {
   }
 
   onToggleStep() {
-    var { row, col, dispatch } = this.props;
+    var { row, col, grid, dispatch } = this.props;
 
-    dispatch(toggleStepButton(col, row));
+    dispatch(toggleStepButton(col, row, grid));
   }
 
   render() {
@@ -33,6 +33,6 @@ class StepButton extends Component {
 
 export default connect(
   (state) => {
-    return state.grid1;
+    return state.grids[0];
   }
 )(StepButton);

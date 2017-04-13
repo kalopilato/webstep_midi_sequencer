@@ -1,5 +1,6 @@
 import { initialisedGrid } from '../lib/lib';
 import { NOTES, STEP_VALUES, SCALES, TOTAL_STEPS, MIDI_CHANNELS } from '../constants';
+var redux = require('redux');
 
 export var playingReducer = (state = false, action) => {
   switch (action.type) {
@@ -100,6 +101,44 @@ export var midiChannelReducer = (state = Object.keys(MIDI_CHANNELS)[0], action) 
       return state;
   }
 }
+
+export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => {
+  switch (action.type) {
+    case 'ADD_GRID':
+      return [
+        ...state
+      ]
+    case 'REMOVE_GRID':
+      return state;
+    case 'TOGGLE_STEP_BUTTON':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, columns: columnsReducer(grid.columns, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    case 'CLEAR_GRID':
+      var gridIndex = action.grid;
+      var grid = state[gridIndex];
+      var updatedGrid = {...grid, columns: columnsReducer(grid.columns, action)};
+
+      return state.slice(0, grid)
+                  .concat(updatedGrid)
+                  .concat(state.slice(grid + 1));
+    default:
+      return [...state];
+  }
+}
+
+const INITIALISED_SEQUENCER_INSTANCE = {
+  columns: columnsReducer(undefined, {type: ''}),
+  currentScale: scaleReducer(undefined, {type: ''}),
+  currentOctave: octaveReducer(undefined, {type: ''}),
+  rootNote: rootNoteReducer(undefined, {type: ''}),
+  swing: swingReducer(undefined, {type: ''}),
+  midiChannel: midiChannelReducer(undefined, {type: ''})
+};
 
 var updateColumnReducer = (state, action) => {
   switch (action.type) {

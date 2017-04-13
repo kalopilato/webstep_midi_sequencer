@@ -5,11 +5,11 @@ import { createColumn } from 'actions';
 
 class StepColumn extends Component {
   renderNotes() {
-    var { columns, id } = this.props;
+    var { columns, id, grid } = this.props;
 
     return columns[id].map((row) => {
       return (
-        <StepButton key={row.row} row={row.row} col={row.col} active={row.active} />
+        <StepButton key={row.row} row={row.row} col={row.col} active={row.active} grid={grid}/>
       );
     });
   }
@@ -37,7 +37,7 @@ export default connect(
     return {
       playing: state.playing,
       currentColumn: state.currentColumn,
-      columns: state.grid1.columns,
+      columns: state.grids[0].columns,
     }
   }
 )(StepColumn);

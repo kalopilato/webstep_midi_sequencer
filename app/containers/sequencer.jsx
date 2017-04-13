@@ -40,7 +40,6 @@ class Sequencer extends Component {
   }
 
   midiSuccess(midiAccess) {
-    var { dispatch } = this.props;
     var outputs = midiAccess.outputs;
 
     if(outputs.size < 1){
@@ -122,8 +121,8 @@ class Sequencer extends Component {
   render() {
     return (
       <div>
-        <StepMatrix />
-        <Controls />
+        <StepMatrix grid={this.props.grid} />
+        <Controls grid={this.props.grid}/>
       </div>
     )
   }
@@ -137,12 +136,12 @@ export default connect(
       tempo: state.tempo,
       stepValue: state.stepValue,
       currentColumn: state.currentColumn,
-      currentScale: state.grid1.currentScale,
-      currentOctave: state.grid1.currentOctave,
-      rootNote: state.grid1.rootNote,
-      midiChannel: state.grid1.midiChannel,
-      swing: state.grid1.swing,
-      columns: state.grid1.columns,
+      currentScale: state.grids[0].currentScale,
+      currentOctave: state.grids[0].currentOctave,
+      rootNote: state.grids[0].rootNote,
+      midiChannel: state.grids[0].midiChannel,
+      swing: state.grids[0].swing,
+      columns: state.grids[0].columns,
     }
   }
 )(Sequencer);

@@ -17,11 +17,11 @@ class Main extends Component {
 
         <div className="row">
           <div className="large-3 columns">
-            <GridInstanceMenu />
+            <GridInstanceMenu grid={0} />
           </div>
 
           <div className="large-9 columns">
-            <Sequencer />
+            <Sequencer grid={0} />
           </div>
         </div>
       </div>
@@ -31,6 +31,6 @@ class Main extends Component {
 
 export default connect(
   (state) => {
-    return state.grid1;
+    return state.grids[0];
   }
 )(Main);

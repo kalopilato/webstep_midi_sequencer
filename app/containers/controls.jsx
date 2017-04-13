@@ -26,7 +26,7 @@ class Controls extends Component {
 
   handleClear() {
     var { dispatch } = this.props;
-    dispatch(clearGrid());
+    dispatch(clearGrid(this.props.grid));
   }
 
   render() {
