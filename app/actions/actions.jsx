@@ -63,10 +63,11 @@ export var changeRootNote = (index, grid) => {
   }
 }
 
-export var changeStepValue = (stepValue) => {
+export var changeStepValue = (stepValue, grid) => {
   return {
     type: 'CHANGE_STEP_VALUE',
-    payload: stepValue
+    payload: stepValue,
+    grid
   }
 }
 

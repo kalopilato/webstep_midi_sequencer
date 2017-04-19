@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { changeScale,
+import { changeStepValue,
+         changeScale,
          changeOctave,
          changeRootNote,
          changeSwing,
@@ -16,11 +17,16 @@ class GridInstanceMenu extends Component {
   constructor(){
     super();
 
+    this.handleStepValueChange = this.handleStepValueChange.bind(this);
     this.handleScaleChange = this.handleScaleChange.bind(this);
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleSwingChange = this.handleSwingChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
+  }
+
+  handleStepValueChange(stepValue) {
+    this.dispatchAction(changeStepValue, stepValue);
   }
 
   handleScaleChange(scale) {
@@ -50,12 +56,13 @@ class GridInstanceMenu extends Component {
   }
 
   render() {
-    var { scale, octave, rootNote, swing, midiChannel } = this.props;
+    var { stepValue, scale, octave, rootNote, swing, midiChannel } = this.props;
 
     return (
       <div className="menu">
         <div className="row">
           <div className="small-12 columns">
+            <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
             <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
@@ -71,6 +78,7 @@ class GridInstanceMenu extends Component {
 export default connect(
   (state) => {
     return {
+      stepValue: state.grids[0].stepValue,
       scale: state.grids[0].currentScale,
       octave: state.grids[0].currentOctave,
       rootNote: state.grids[0].rootNote,

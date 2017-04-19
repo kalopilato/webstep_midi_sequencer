@@ -13,6 +13,15 @@ export var playingReducer = (state = false, action) => {
   }
 }
 
+export var tempoReducer = (state = 120, action) => {
+  switch (action.type) {
+    case 'CHANGE_TEMPO':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 export var currentColumnReducer = (state = 0, action) => {
   switch (action.type) {
     case 'INCREMENT_COLUMN':
@@ -23,34 +32,6 @@ export var currentColumnReducer = (state = 0, action) => {
       return state;
   }
 }
-
-export var tempoReducer = (state = 120, action) => {
-  switch (action.type) {
-    case 'CHANGE_TEMPO':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-export var octaveReducer = (state = 0, action) => {
-  switch (action.type) {
-    case 'CHANGE_OCTAVE':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-export var stepValueReducer = (state = STEP_VALUES[0], action) => {
-  switch (action.type) {
-    case 'CHANGE_STEP_VALUE':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 
 
 
@@ -63,64 +44,35 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => 
     case 'REMOVE_GRID':
       return state;
     case 'TOGGLE_STEP_BUTTON':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, columns: columnsReducer(grid.columns, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'columns', columnsReducer);
     case 'CLEAR_GRID':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, columns: columnsReducer(grid.columns, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'columns', columnsReducer);
     case 'CHANGE_MIDI_CHANNEL':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, midiChannel: midiChannelReducer(grid.midiChannel, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'midiChannel', midiChannelReducer);
     case 'CHANGE_OCTAVE':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, currentOctave: octaveReducer(grid.currentOctave, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'currentOctave', octaveReducer);
     case 'CHANGE_SCALE':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, currentScale: scaleReducer(grid.currentScale, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'currentScale', scaleReducer);
     case 'CHANGE_ROOT_NOTE':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, rootNote: rootNoteReducer(grid.rootNote, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'rootNote', rootNoteReducer);
     case 'CHANGE_SWING':
-      var gridIndex = action.grid;
-      var grid = state[gridIndex];
-      var updatedGrid = {...grid, swing: swingReducer(grid.swing, action)};
-
-      return state.slice(0, grid)
-                  .concat(updatedGrid)
-                  .concat(state.slice(grid + 1));
+      return updateGrid(state, action, 'swing', swingReducer);
+    case 'CHANGE_STEP_VALUE':
+      return updateGrid(state, action, 'stepValue', stepValueReducer);
     default:
       return [...state];
   }
+}
+
+var updateGrid = (state, action, keyToUpdate, reducer) => {
+  var gridIndex = action.grid;
+  var grid = state[gridIndex];
+  var updatedGrid = {...grid};
+  updatedGrid[keyToUpdate] = reducer(grid[keyToUpdate], action);
+
+  return state.slice(0, gridIndex)
+              .concat(updatedGrid)
+              .concat(state.slice(gridIndex + 1));
 }
 
 var columnsReducer = (state = initialisedGrid(), action) => {
@@ -183,7 +135,22 @@ var swingReducer = (state = 50, action) => {
   }
 }
 
+var stepValueReducer = (state = STEP_VALUES[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_STEP_VALUE':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+
+
+
+
+
 const INITIALISED_SEQUENCER_INSTANCE = {
+  stepValue: stepValueReducer(undefined, {type: ''}),
   columns: columnsReducer(undefined, {type: ''}),
   currentScale: scaleReducer(undefined, {type: ''}),
   currentOctave: octaveReducer(undefined, {type: ''}),

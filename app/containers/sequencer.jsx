@@ -134,8 +134,8 @@ export default connect(
     return {
       playing: state.playing,
       tempo: state.tempo,
-      stepValue: state.stepValue,
       currentColumn: state.currentColumn,
+      stepValue: state.grids[0].stepValue,
       currentScale: state.grids[0].currentScale,
       currentOctave: state.grids[0].currentOctave,
       rootNote: state.grids[0].rootNote,

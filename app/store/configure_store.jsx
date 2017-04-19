@@ -19,7 +19,6 @@ export var configure = () => {
     tempo: tempoReducer,
     playing: playingReducer,
     currentColumn: currentColumnReducer,
-    stepValue: stepValueReducer,
     grids: gridsReducer
   });
 
