@@ -96,7 +96,7 @@ class Sequencer extends Component {
     }
   }
 
-    playLoop() {
+  playLoop() {
     var { playing } = this.props;
     if(playing){
       var { tempo, stepValue, swing, columns, currentColumn, dispatch } = this.props;
