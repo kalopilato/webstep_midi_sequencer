@@ -6,10 +6,12 @@ import { changeStepValue,
          changeOctave,
          changeRootNote,
          changeSwing,
-         changeMidiChannel } from 'actions';
+         changeMidiChannel,
+         clearGrid } from 'actions';
 
 import SliderSelect from 'slider_select';
 import DropdownSelect from 'dropdown_select';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { STEP_VALUES, NOTES, SCALES, MIDI_CHANNELS } from '../constants';
 
@@ -23,6 +25,7 @@ class GridInstanceMenu extends Component {
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleSwingChange = this.handleSwingChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
+    this.handleClearGrid = this.handleClearGrid.bind(this);
   }
 
   handleStepValueChange(stepValue) {
@@ -50,6 +53,11 @@ class GridInstanceMenu extends Component {
     this.dispatchAction(changeMidiChannel, channel);
   }
 
+  handleClearGrid() {
+    var { dispatch, grid } = this.props;
+    dispatch(clearGrid(grid));
+  }
+
   dispatchAction(action, value) {
     const { dispatch, grid } = this.props;
     dispatch(action(value, grid));
@@ -68,6 +76,7 @@ class GridInstanceMenu extends Component {
             <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
             <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
+            <RaisedButton label="Clear Grid" secondary={true} onClick={this.handleClearGrid} />
           </div>
         </div>
       </div>
@@ -83,7 +92,8 @@ export default connect(
       octave: state.grids[0].currentOctave,
       rootNote: state.grids[0].rootNote,
       swing: state.grids[0].swing,
-      midiChannel: state.grids[0].midiChannel
+      midiChannel: state.grids[0].midiChannel,
+
     };
   }
 )(GridInstanceMenu);

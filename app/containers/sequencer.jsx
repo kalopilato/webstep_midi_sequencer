@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import StepMatrix from 'step_matrix';
-import Controls from 'controls';
 import { incrementColumn } from 'actions';
 
 import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE } from '../constants';
@@ -122,7 +121,6 @@ class Sequencer extends Component {
     return (
       <div>
         <StepMatrix grid={this.props.grid} />
-        <Controls grid={this.props.grid}/>
       </div>
     )
   }
