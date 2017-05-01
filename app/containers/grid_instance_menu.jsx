@@ -64,7 +64,8 @@ class GridInstanceMenu extends Component {
   }
 
   render() {
-    var { stepValue, scale, octave, rootNote, swing, midiChannel } = this.props;
+    var grid = this.props.grids[this.props.grid];
+    var { stepValue, currentScale, currentOctave, rootNote, swing, midiChannel } = grid;
 
     return (
       <div className="menu">
@@ -73,8 +74,8 @@ class GridInstanceMenu extends Component {
             <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
             <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
-            <DropdownSelect label="Scale" currentVal={scale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
-            <SliderSelect label="Octave" currentVal={octave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
+            <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
+            <SliderSelect label="Octave" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
             <RaisedButton label="Clear Grid" secondary={true} onClick={this.handleClearGrid} />
           </div>
@@ -87,13 +88,7 @@ class GridInstanceMenu extends Component {
 export default connect(
   (state) => {
     return {
-      stepValue: state.grids[0].stepValue,
-      scale: state.grids[0].currentScale,
-      octave: state.grids[0].currentOctave,
-      rootNote: state.grids[0].rootNote,
-      swing: state.grids[0].swing,
-      midiChannel: state.grids[0].midiChannel,
-
+      grids: state.grids
     };
   }
 )(GridInstanceMenu);

@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { NOTES, SCALES, MIDI_CHANNELS } from '../constants';
 
-class SequencerMenu extends Component {
+class PlaybackControls extends Component {
   constructor(){
     super();
 
@@ -69,4 +69,4 @@ export default connect(
       stepValue: state.stepValue
     };
   }
-)(SequencerMenu);
+)(PlaybackControls);
