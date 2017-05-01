@@ -57,8 +57,9 @@ class Main extends Component {
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
-  sendNoteOn(noteIndex) {
-    var { currentScale, tempo, currentOctave, rootNote, midiChannel } = this.props;
+  sendNoteOn(gridIndex, noteIndex) {
+    var { tempo } = this.props;
+    var { currentScale, currentOctave, rootNote, midiChannel } = this.props.grids[gridIndex];
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
 
     let channel = MIDI_CHANNELS[midiChannel];
@@ -89,24 +90,29 @@ class Main extends Component {
     return rows;
   }
 
-  playNotes(rows){
+  playNotes(gridIndex, rows){
     var i;
     for(i = 0; i < rows.length; i++){
       var row = rows[i];
-      this.sendNoteOn(row);
+      this.sendNoteOn(gridIndex, row);
     }
   }
 
   playLoop() {
-    var { playing } = this.props;
+    var { tempo, playing, dispatch, currentColumn, grids } = this.props;
     if(playing){
-      var { tempo, stepValue, swing, columns, currentColumn, dispatch } = this.props;
       dispatch(incrementColumn());
 
-      var col = columns[currentColumn];
-      var rows = this.activeRows(col);
+      for(let grid = 0; grid < grids.length; grid++){
+        var currentGrid = grids[grid];
 
-      this.playNotes(rows);
+        var { stepValue, swing, columns } = currentGrid;
+
+        var col = columns[currentColumn];
+        var rows = this.activeRows(col);
+
+        this.playNotes(grid, rows);
+      }
 
       let stepDuration = (MINUTE / tempo) * (4 * eval(stepValue));
       let swingMultiplier = swing / 50;
@@ -158,13 +164,7 @@ export default connect(
       playing: state.playing,
       tempo: state.tempo,
       currentColumn: state.currentColumn,
-      stepValue: state.grids[0].stepValue,
-      currentScale: state.grids[0].currentScale,
-      currentOctave: state.grids[0].currentOctave,
-      rootNote: state.grids[0].rootNote,
-      midiChannel: state.grids[0].midiChannel,
-      swing: state.grids[0].swing,
-      columns: state.grids[0].columns,
+      grids: state.grids
     }
   }
 )(Main);
