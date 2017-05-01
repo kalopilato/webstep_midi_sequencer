@@ -53,7 +53,7 @@ class Main extends Component {
     var selectedMidiOutput = midiOutputs[0];
 
     this.setState({ midiOutput: selectedMidiOutput });
-    console.log("Setting MIDI output device to: ", selectedMidiOutput);
+    console.log("Setting MIDI output device to: ", selectedMidiOutput.manufacturer, selectedMidiOutput.name);
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info

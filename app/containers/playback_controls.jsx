@@ -59,16 +59,16 @@ class PlaybackControls extends Component {
     return (
       <div className="menu">
         <div className="row small-12 columns">
-          <div className="small-3 columns">
+          <div className="small-3 columns menu-component">
             <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
           </div>
-          <div className="small-3 columns">
+          <div className="small-3 columns menu-component">
             <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
           </div>
-          <div className="small-3 columns">
+          <div className="small-3 columns menu-component">
             <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
           </div>
-          <div className="small-3 columns">
+          <div className="small-3 columns menu-component">
             <RaisedButton label={this.playLabel()} primary={!playing} default={playing} onClick={this.handleTogglePlay} />
             <RaisedButton label="Stop" secondary={true} onClick={this.handleStop} />
           </div>
