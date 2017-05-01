@@ -99,7 +99,7 @@ class Main extends Component {
   }
 
   playLoop() {
-    let { tempo, swing, playing, dispatch, currentColumn, grids } = this.props;
+    let { tempo, swing, stepValue, playing, dispatch, currentColumn, grids } = this.props;
 
     if(playing){
       dispatch(incrementColumn());
@@ -107,7 +107,7 @@ class Main extends Component {
       for(let grid = 0; grid < grids.length; grid++){
         var currentGrid = grids[grid];
 
-        var { stepValue, columns } = currentGrid;
+        var { columns } = currentGrid;
 
         var col = columns[currentColumn];
         var rows = this.activeRows(col);
@@ -165,6 +165,7 @@ export default connect(
       playing: state.playing,
       tempo: state.tempo,
       swing: state.swing,
+      stepValue: state.stepValue,
       currentColumn: state.currentColumn,
       grids: state.grids
     }

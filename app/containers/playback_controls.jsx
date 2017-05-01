@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { togglePlaying, stopAndResetPosition, changeTempo, changeSwing } from 'actions';
+import { togglePlaying, stopAndResetPosition, changeTempo, changeSwing, changeStepValue } from 'actions';
 
 import SliderSelect from 'slider_select';
 import DropdownSelect from 'dropdown_select';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { NOTES, SCALES, MIDI_CHANNELS } from '../constants';
+import { NOTES, SCALES, STEP_VALUES, MIDI_CHANNELS } from '../constants';
 
 class PlaybackControls extends Component {
   constructor(){
@@ -15,6 +15,7 @@ class PlaybackControls extends Component {
 
     this.handleTempoChange = this.handleTempoChange.bind(this);
     this.handleSwingChange = this.handleSwingChange.bind(this);
+    this.handleStepValueChange = this.handleStepValueChange.bind(this);
     this.handleTogglePlay = this.handleTogglePlay.bind(this);
     this.handleStop = this.handleStop.bind(this);
   }
@@ -25,6 +26,10 @@ class PlaybackControls extends Component {
 
   handleSwingChange(swing) {
     this.dispatchAction(changeSwing, swing);
+  }
+
+  handleStepValueChange(stepValue) {
+    this.dispatchAction(changeStepValue, stepValue);
   }
 
   handleTogglePlay() {
@@ -54,13 +59,16 @@ class PlaybackControls extends Component {
     return (
       <div className="menu">
         <div className="row small-12 columns">
-          <div className="small-4 columns">
+          <div className="small-3 columns">
             <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
           </div>
-          <div className="small-4 columns">
+          <div className="small-3 columns">
             <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
           </div>
-          <div className="small-4 columns">
+          <div className="small-3 columns">
+            <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
+          </div>
+          <div className="small-3 columns">
             <RaisedButton label={this.playLabel()} primary={!playing} default={playing} onClick={this.handleTogglePlay} />
             <RaisedButton label="Stop" secondary={true} onClick={this.handleStop} />
           </div>

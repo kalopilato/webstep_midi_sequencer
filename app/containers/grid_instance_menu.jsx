@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { changeStepValue,
-         changeScale,
+import { changeScale,
          changeOctave,
          changeRootNote,
          changeMidiChannel,
@@ -18,16 +17,11 @@ class GridInstanceMenu extends Component {
   constructor(){
     super();
 
-    this.handleStepValueChange = this.handleStepValueChange.bind(this);
     this.handleScaleChange = this.handleScaleChange.bind(this);
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
     this.handleClearGrid = this.handleClearGrid.bind(this);
-  }
-
-  handleStepValueChange(stepValue) {
-    this.dispatchAction(changeStepValue, stepValue);
   }
 
   handleScaleChange(scale) {
@@ -65,7 +59,6 @@ class GridInstanceMenu extends Component {
       <div className="menu">
         <div className="row">
           <div className="small-12 columns">
-            <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
             <SliderSelect label="Octave" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
