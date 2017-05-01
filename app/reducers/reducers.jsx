@@ -31,3 +31,12 @@ export var currentColumnReducer = (state = 0, action) => {
       return state;
   }
 }
+
+export var swingReducer = (state = 50, action) => {
+  switch (action.type) {
+    case 'CHANGE_SWING':
+      return action.payload;
+    default:
+      return state;
+  }
+}

@@ -47,6 +47,13 @@ export var changeTempo = (tempo) => {
   }
 }
 
+export var changeSwing = (swing) => {
+  return {
+    type: 'CHANGE_SWING',
+    payload: swing
+  }
+}
+
 export var changeOctave = (octave, grid) => {
   return {
     type: 'CHANGE_OCTAVE',
@@ -71,13 +78,6 @@ export var changeStepValue = (stepValue, grid) => {
   }
 }
 
-export var changeSwing = (swing, grid) => {
-  return {
-    type: 'CHANGE_SWING',
-    payload: swing,
-    grid
-  }
-}
 
 export var changeMidiChannel = (channel, grid) => {
   return {

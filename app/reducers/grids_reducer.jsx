@@ -21,8 +21,6 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_
       return updateGrid(state, action, 'currentScale', scaleReducer);
     case 'CHANGE_ROOT_NOTE':
       return updateGrid(state, action, 'rootNote', rootNoteReducer);
-    case 'CHANGE_SWING':
-      return updateGrid(state, action, 'swing', swingReducer);
     case 'CHANGE_STEP_VALUE':
       return updateGrid(state, action, 'stepValue', stepValueReducer);
     default:
@@ -92,15 +90,6 @@ var rootNoteReducer = (state = 0, action) => {
   }
 }
 
-var swingReducer = (state = 50, action) => {
-  switch (action.type) {
-    case 'CHANGE_SWING':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 var stepValueReducer = (state = STEP_VALUES[0], action) => {
   switch (action.type) {
     case 'CHANGE_STEP_VALUE':
@@ -136,6 +125,5 @@ const INITIALISED_SEQUENCER_INSTANCE = {
   currentScale: scaleReducer(undefined, {type: ''}),
   currentOctave: octaveReducer(undefined, {type: ''}),
   rootNote: rootNoteReducer(undefined, {type: ''}),
-  swing: swingReducer(undefined, {type: ''}),
   midiChannel: midiChannelReducer(undefined, {type: ''})
 };

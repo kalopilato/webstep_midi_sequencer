@@ -5,7 +5,6 @@ import { changeStepValue,
          changeScale,
          changeOctave,
          changeRootNote,
-         changeSwing,
          changeMidiChannel,
          clearGrid } from 'actions';
 
@@ -23,7 +22,6 @@ class GridInstanceMenu extends Component {
     this.handleScaleChange = this.handleScaleChange.bind(this);
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
-    this.handleSwingChange = this.handleSwingChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
     this.handleClearGrid = this.handleClearGrid.bind(this);
   }
@@ -45,10 +43,6 @@ class GridInstanceMenu extends Component {
     this.dispatchAction(changeRootNote, index);
   }
 
-  handleSwingChange(swing) {
-    this.dispatchAction(changeSwing, swing);
-  }
-
   handleMidiChannelChange(channel) {
     this.dispatchAction(changeMidiChannel, channel);
   }
@@ -65,14 +59,13 @@ class GridInstanceMenu extends Component {
 
   render() {
     var grid = this.props.grids[this.props.grid];
-    var { stepValue, currentScale, currentOctave, rootNote, swing, midiChannel } = grid;
+    var { stepValue, currentScale, currentOctave, rootNote, midiChannel } = grid;
 
     return (
       <div className="menu">
         <div className="row">
           <div className="small-12 columns">
             <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
-            <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
             <SliderSelect label="Octave" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />

@@ -1,11 +1,12 @@
 import { initialisedGrid } from '../lib/lib';
 import { combineReducers, createStore, compose } from 'redux';
 import { gridsReducer } from 'grids_reducer';
-import { tempoReducer, playingReducer, currentColumnReducer } from 'reducers';
+import { tempoReducer, playingReducer, currentColumnReducer, swingReducer } from 'reducers';
 
 export var configure = () => {
   var reducer = combineReducers({
     tempo: tempoReducer,
+    swing: swingReducer,
     playing: playingReducer,
     currentColumn: currentColumnReducer,
     grids: gridsReducer
