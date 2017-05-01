@@ -31,8 +31,4 @@ class StepButton extends Component {
   }
 }
 
-export default connect(
-  (state) => {
-    return state.grids[0];
-  }
-)(StepButton);
+export default connect()(StepButton);

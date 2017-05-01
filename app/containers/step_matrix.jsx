@@ -5,10 +5,12 @@ import StepColumn from 'step_column';
 
 class StepMatrix extends Component {
   renderColumns() {
-    var { columns, grid } = this.props
+    const grid = this.props.grids[this.props.grid];
+    const columns = grid.columns;
+
     return columns.map((col, i) => {
       return (
-        <StepColumn key={i} id={i} grid={grid}/>
+        <StepColumn key={i} id={i} grid={this.props.grid}/>
       );
     });
   }
@@ -24,6 +26,6 @@ class StepMatrix extends Component {
 
 export default connect((state) => {
   return {
-    columns: state.grids[0].columns,
+    grids: state.grids
   }
 })(StepMatrix);

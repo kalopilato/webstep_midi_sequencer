@@ -1,4 +1,4 @@
-import { TOTAL_STEPS } from '../constants';
+import { TOTAL_STEPS, STEP_VALUES } from '../constants';
 var redux = require('redux');
 
 export var playingReducer = (state = false, action) => {
@@ -27,6 +27,25 @@ export var currentColumnReducer = (state = 0, action) => {
       return state === TOTAL_STEPS - 1 ? 0 : state + 1;
     case 'STOP_AND_RESET':
       return 0;
+    default:
+      return state;
+  }
+}
+
+export var swingReducer = (state = 50, action) => {
+  switch (action.type) {
+    case 'CHANGE_SWING':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+
+export var stepValueReducer = (state = STEP_VALUES[0], action) => {
+  switch (action.type) {
+    case 'CHANGE_STEP_VALUE':
+      return action.payload;
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import { initialisedGrid } from '../lib/lib';
-import { STEP_VALUES, SCALES, MIDI_CHANNELS } from '../constants';
+import { SCALES, MIDI_CHANNELS } from '../constants';
 
-export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => {
+export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE], action) => {
   switch (action.type) {
     case 'ADD_GRID':
       return [
@@ -21,10 +21,6 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE], action) => 
       return updateGrid(state, action, 'currentScale', scaleReducer);
     case 'CHANGE_ROOT_NOTE':
       return updateGrid(state, action, 'rootNote', rootNoteReducer);
-    case 'CHANGE_SWING':
-      return updateGrid(state, action, 'swing', swingReducer);
-    case 'CHANGE_STEP_VALUE':
-      return updateGrid(state, action, 'stepValue', stepValueReducer);
     default:
       return [...state];
   }
@@ -92,24 +88,6 @@ var rootNoteReducer = (state = 0, action) => {
   }
 }
 
-var swingReducer = (state = 50, action) => {
-  switch (action.type) {
-    case 'CHANGE_SWING':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-var stepValueReducer = (state = STEP_VALUES[0], action) => {
-  switch (action.type) {
-    case 'CHANGE_STEP_VALUE':
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 var toggleStepButton = (button) => {
   var { active } = button;
   return Object.assign({}, button, {
@@ -131,11 +109,9 @@ var updateColumnReducer = (state, action) => {
 }
 
 const INITIALISED_SEQUENCER_INSTANCE = {
-  stepValue: stepValueReducer(undefined, {type: ''}),
   columns: columnsReducer(undefined, {type: ''}),
   currentScale: scaleReducer(undefined, {type: ''}),
   currentOctave: octaveReducer(undefined, {type: ''}),
   rootNote: rootNoteReducer(undefined, {type: ''}),
-  swing: swingReducer(undefined, {type: ''}),
   midiChannel: midiChannelReducer(undefined, {type: ''})
 };

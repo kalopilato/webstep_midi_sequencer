@@ -5,7 +5,8 @@ import { createColumn } from 'actions';
 
 class StepColumn extends Component {
   renderNotes() {
-    var { columns, id, grid } = this.props;
+    var { id, grid } = this.props;
+    var columns = this.props.grids[grid].columns;
 
     return columns[id].map((row) => {
       return (
@@ -15,7 +16,9 @@ class StepColumn extends Component {
   }
 
   isPlaying() {
-    var { id, columns, currentColumn, playing } = this.props;
+    var { id, grid, currentColumn, playing } = this.props;
+    var columns = this.props.grids[grid].columns;
+
     return ((currentColumn - 1) === id || currentColumn === 0 && id === columns.length - 1) && playing;
   }
 
@@ -37,7 +40,7 @@ export default connect(
     return {
       playing: state.playing,
       currentColumn: state.currentColumn,
-      columns: state.grids[0].columns,
+      grids: state.grids
     }
   }
 )(StepColumn);
