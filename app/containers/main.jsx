@@ -12,20 +12,30 @@ import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE } from '../constants';
 const MIDI_ROOT = 60;
 const MINUTE = 60000;
 
+var nextNoteTime, startTime, lastRenderTime, requestId, stepDuration;
+
 class Main extends Component {
   constructor() {
     super();
 
     this.initialiseMIDI();
+    this.schedule = this.schedule.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState){
     var { playing } = this.props;
     if(playing !== prevProps.playing){
       if(playing) {
-        this.playLoop();
+        nextNoteTime = 0.0;
+        startTime = window.performance.now() + 0.005;
+        lastRenderTime = -1;
+        this.updateStepDuration();
+        this.schedule();
         console.log("start playing");
+      } else {
+        this.clearSchedule();
       }
+
     }
   }
 
@@ -57,7 +67,7 @@ class Main extends Component {
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
-  sendNoteOn(gridIndex, noteIndex) {
+  sendNoteOn(gridIndex, noteIndex, playTime) {
     var { tempo } = this.props;
     var { currentScale, currentOctave, rootNote, midiChannel } = this.props.grids[gridIndex];
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
@@ -71,10 +81,8 @@ class Main extends Component {
     var noteOnMessage = [noteOnByte, note, 0x7f];
     var noteOffMessage = [noteOffByte, note, 0x7f];
 
-    this.state.midiOutput.send(noteOnMessage);
-    this.timer = setTimeout(() => {
-      this.state.midiOutput.send(noteOffMessage);
-    }, (MINUTE / tempo) / 2);
+    this.state.midiOutput.send(noteOnMessage, playTime);
+    this.state.midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
   }
 
   activeRows(column) {
@@ -90,40 +98,55 @@ class Main extends Component {
     return rows;
   }
 
-  playNotes(gridIndex, rows){
+  playNotes(gridIndex, rows, playTime){
     var i;
     for(i = 0; i < rows.length; i++){
       var row = rows[i];
-      this.sendNoteOn(gridIndex, row);
+      this.sendNoteOn(gridIndex, row, playTime);
     }
   }
 
-  playLoop() {
-    let { tempo, swing, stepValue, playing, dispatch, currentColumn, grids } = this.props;
+  clearSchedule(){
+    window.cancelAnimationFrame(requestId);
+  }
 
-    if(playing){
-      dispatch(incrementColumn());
+  schedule() {
+    var currentTime = window.performance.now() - startTime;
+
+    while (nextNoteTime < currentTime + 0.200) {
+      var { dispatch, currentColumn, grids } = this.props;
+      var playTime = nextNoteTime + startTime;
 
       for(let grid = 0; grid < grids.length; grid++){
         var currentGrid = grids[grid];
-
         var { columns } = currentGrid;
 
         var col = columns[currentColumn];
         var rows = this.activeRows(col);
 
-        this.playNotes(grid, rows);
+        this.playNotes(grid, rows, playTime);
       }
-
-      let stepDuration = (MINUTE / tempo) * (4 * eval(stepValue));
-      let swingMultiplier = swing / 50;
-
-      stepDuration = (currentColumn % 2 === 0) ? stepDuration * swingMultiplier : stepDuration * (2 - swingMultiplier);
-
-      this.stepTimer = setTimeout(() => {
-        this.playLoop();
-      }, stepDuration);
+      if(nextNoteTime !== lastRenderTime) {
+        lastRenderTime = nextNoteTime;
+        dispatch(incrementColumn());
+      }
+      this.advanceNoteTime();
     }
+
+    requestId = window.requestAnimationFrame(this.schedule);
+  }
+
+  advanceNoteTime() {
+    this.updateStepDuration();
+    nextNoteTime += stepDuration;
+  }
+
+  updateStepDuration() {
+    let { tempo, swing, stepValue, currentColumn } = this.props;
+    let swingMultiplier = swing / 50;
+
+    stepDuration = (MINUTE / tempo) * (4 * eval(stepValue));
+    stepDuration = (currentColumn % 2 === 0) ? stepDuration * (2 - swingMultiplier) : stepDuration * swingMultiplier;
   }
 
   render() {
