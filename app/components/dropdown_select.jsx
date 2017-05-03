@@ -27,7 +27,7 @@ export default class DropdownSelect extends Component {
 
     return (
       <div className="row">
-        <SelectField floatingLabelText={label} value={currentVal} onChange={this.onChange}>
+        <SelectField floatingLabelText={label} value={currentVal} onChange={this.onChange} floatingLabelStyle={{fontSize: 20, color: 'rgba(0, 0, 0, 0.8)'}}>
           {this.menuItems(itemsArray)}
         </SelectField>
       </div>
