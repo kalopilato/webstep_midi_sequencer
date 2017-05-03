@@ -59,4 +59,4 @@ export const MIDI_MESSAGE_TYPE = {
   NOTE_OFF: '1000'
 }
 
-export const TOTAL_STEPS = 8;
+export const TOTAL_STEPS = 16;
