@@ -74,7 +74,7 @@ class GridInstanceMenu extends Component {
           <div className="small-12 columns">
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
-            <SliderSelect label="Octave" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
+            <SliderSelect label="Octave" units="" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Output" currentVal={currentOutputName} itemsArray={outputNames} onChange={this.handleMidiOutputChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
             <RaisedButton label="Clear Grid" secondary={true} onClick={this.handleClearGrid} />

@@ -60,10 +60,10 @@ class PlaybackControls extends Component {
       <div className="menu">
         <div className="row small-12 columns">
           <div className="small-3 columns menu-component">
-            <SliderSelect label="Tempo" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
+            <SliderSelect label="Tempo" units="bpm" currentVal={tempo} minVal={40} maxVal={240} onChange={this.handleTempoChange} />
           </div>
           <div className="small-3 columns menu-component">
-            <SliderSelect label="Swing" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
+            <SliderSelect label="Swing" units="%" currentVal={swing} minVal={50} maxVal={80} onChange={this.handleSwingChange} />
           </div>
           <div className="small-3 columns menu-component">
             <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />

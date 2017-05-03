@@ -15,19 +15,21 @@ export default class TempoSlider extends Component {
   };
 
   render() {
-    var { currentVal, minVal, maxVal, label } = this.props;
+    var { currentVal, minVal, maxVal, label, units } = this.props;
 
     return (
       <div>
-        <div className="row">
-          <TextField
-            value={currentVal}
-            floatingLabelText={label}/>
-        </div>
+        <h6 style={{textAlign: 'left'}}>
+          {label}
+          <span style={{float: 'right'}}>{currentVal}{units}</span>
+        </h6>
 
-        <div className="row">
-          <Slider style={{width: 250}} min={minVal} max={maxVal} defaultValue={currentVal} step={1} onChange={this.onChange} />
-        </div>
+        <Slider sliderStyle={{width: 250, marginTop: 0, marginBottom: 0}}
+                min={minVal}
+                max={maxVal}
+                defaultValue={currentVal}
+                step={1}
+                onChange={this.onChange} />
       </div>
     )
   }
