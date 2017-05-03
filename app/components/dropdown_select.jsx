@@ -19,7 +19,7 @@ export default class DropdownSelect extends Component {
   }
 
   onChange = (event, index, value) => {
-    this.props.onChange(value);
+    this.props.onChange(index, value);
   };
 
   render() {

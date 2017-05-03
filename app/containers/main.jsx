@@ -5,7 +5,7 @@ import StepMatrix from 'step_matrix';
 import PlaybackControls from 'playback_controls';
 import GridInstanceMenu from 'grid_instance_menu';
 
-import { incrementColumn } from 'actions';
+import { incrementColumn, setMidiOutputs } from 'actions';
 
 import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE } from '../constants';
 
@@ -46,43 +46,53 @@ class Main extends Component {
         () => { alert("MIDI Error: Access Denied")}
       );
     } else {
-      alert("Your browser does not support MIDI, please use a real browser");
+      alert("Your browser does not support the Web MIDI API :(");
     }
   }
 
   midiSuccess(midiAccess) {
     var outputs = midiAccess.outputs;
+    var { dispatch } = this.props;
 
     if(outputs.size < 1){
       return alert("You have no MIDI devices connected");
     }
 
     var midiOutputs = [];
-    for(let output of outputs) { midiOutputs.push(output[1]) };
+    for(let output of outputs.values()) { midiOutputs.push(output) };
 
-    var selectedMidiOutput = midiOutputs[0];
+    var outputsList = [];
+    for(let output of midiOutputs) {
+      outputsList.push({ id: output.id, name: `${output.manufacturer} ${output.name}`});
+    }
 
-    this.setState({ midiOutput: selectedMidiOutput });
-    console.log("Setting MIDI output device to: ", selectedMidiOutput.manufacturer, selectedMidiOutput.name);
+    dispatch(setMidiOutputs(outputsList));
+
+    this.setState({ midiAccess });
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
   sendNoteOn(gridIndex, noteIndex, playTime) {
-    var { tempo } = this.props;
-    var { currentScale, currentOctave, rootNote, midiChannel } = this.props.grids[gridIndex];
+    var { tempo, dispatch } = this.props;
+    var { currentScale, currentOctave, rootNote, midiChannel, midiOutputId } = this.props.grids[gridIndex];
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
 
-    let channel = MIDI_CHANNELS[midiChannel];
-    let noteOn = MIDI_MESSAGE_TYPE.NOTE_ON;
-    let noteOff = MIDI_MESSAGE_TYPE.NOTE_OFF;
-    var noteOnByte = parseInt(noteOn + channel, 2);
-    var noteOffByte = parseInt(noteOff + channel, 2);
+    var midiOutput = this.state.midiAccess.outputs.get(midiOutputId);
 
-    var noteOnMessage = [noteOnByte, note, 0x7f];
-    var noteOffMessage = [noteOffByte, note, 0x7f];
+    //TODO: error handling when midiOutput is not selected or does not exist
+    if(midiOutput) {
+      let channel = MIDI_CHANNELS[midiChannel];
+      let noteOn = MIDI_MESSAGE_TYPE.NOTE_ON;
+      let noteOff = MIDI_MESSAGE_TYPE.NOTE_OFF;
+      var noteOnByte = parseInt(noteOn + channel, 2);
+      var noteOffByte = parseInt(noteOff + channel, 2);
 
-    this.state.midiOutput.send(noteOnMessage, playTime);
-    this.state.midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
+      var noteOnMessage = [noteOnByte, note, 0x7f];
+      var noteOffMessage = [noteOffByte, note, 0x7f];
+
+      midiOutput.send(noteOnMessage, playTime);
+      midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
+    }
   }
 
   activeRows(column) {
