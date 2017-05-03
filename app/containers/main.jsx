@@ -173,8 +173,8 @@ class Main extends Component {
           </div>
         </div>
 
-        <div className="row">
-          <div className="large-3 columns">
+        <div className="row" style={{position: 'relative'}}>
+          <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <GridInstanceMenu grid={0} />
           </div>
 
@@ -183,8 +183,8 @@ class Main extends Component {
           </div>
         </div>
 
-        <div className="row">
-          <div className="large-3 columns">
+        <div className="row" style={{position: 'relative'}}>
+          <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <GridInstanceMenu grid={1} />
           </div>
 

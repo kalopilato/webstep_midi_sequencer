@@ -8,6 +8,10 @@
 // Components
 @import "components/components";
 // Cleans up polluted styling
+ul {
+  margin-left: 0;
+  margin-bottom: 0;
+}
 ul ul {
   margin: 0;
 }

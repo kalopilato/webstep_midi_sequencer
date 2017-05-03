@@ -71,7 +71,7 @@ class GridInstanceMenu extends Component {
     return (
       <div className="menu">
         <div className="row">
-          <div className="small-12 columns">
+          <div className="small-12 columns" style={{flex: 'none'}}>
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
             <SliderSelect label="Octave" units="" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />

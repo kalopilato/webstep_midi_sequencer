@@ -18,11 +18,11 @@ export default class TempoSlider extends Component {
     var { currentVal, minVal, maxVal, label, units } = this.props;
 
     return (
-      <div>
-        <h6 style={{textAlign: 'left'}}>
+      <div style={{paddingTop: 18}}>
+        <p style={{textAlign: 'left', fontSize: '0.65625rem', color: 'rgba(0, 0, 0, 0.298039)'}}>
           {label}
           <span style={{float: 'right'}}>{currentVal}{units}</span>
-        </h6>
+        </p>
 
         <Slider sliderStyle={{width: 250, marginTop: 0, marginBottom: 0}}
                 min={minVal}

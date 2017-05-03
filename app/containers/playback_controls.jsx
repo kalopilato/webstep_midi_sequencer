@@ -68,7 +68,7 @@ class PlaybackControls extends Component {
           <div className="small-3 columns menu-component">
             <DropdownSelect label="Step Value" currentVal={stepValue} itemsArray={STEP_VALUES} onChange={this.handleStepValueChange} />
           </div>
-          <div className="small-3 columns menu-component">
+          <div className="small-3 columns menu-component" style={{paddingTop: 20}}>
             <RaisedButton label={this.playLabel()} primary={!playing} default={playing} onClick={this.handleTogglePlay} />
             <RaisedButton label="Stop" secondary={true} onClick={this.handleStop} />
           </div>
