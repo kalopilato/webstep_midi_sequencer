@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import StepMatrix from 'step_matrix';
 import PlaybackControls from 'playback_controls';
 import GridInstanceMenu from 'grid_instance_menu';
+import AppBar from 'material-ui/AppBar'
 
 import { incrementColumn, setMidiOutputs } from 'actions';
 
@@ -162,6 +163,10 @@ class Main extends Component {
   render() {
     return (
       <div>
+        <div>
+          <AppBar title="WebStep" />
+        </div>
+
         <div className="row">
           <div className="large-12 columns">
             <PlaybackControls />
