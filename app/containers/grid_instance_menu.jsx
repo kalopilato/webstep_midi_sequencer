@@ -5,7 +5,8 @@ import { changeScale,
          changeOctave,
          changeRootNote,
          changeMidiChannel,
-         clearGrid } from 'actions';
+         clearGrid,
+         changeMidiOutputId } from 'actions';
 
 import SliderSelect from 'slider_select';
 import DropdownSelect from 'dropdown_select';
@@ -22,9 +23,10 @@ class GridInstanceMenu extends Component {
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
     this.handleClearGrid = this.handleClearGrid.bind(this);
+    this.handleMidiOutputChange = this.handleMidiOutputChange.bind(this);
   }
 
-  handleScaleChange(scale) {
+  handleScaleChange(index, scale) {
     this.dispatchAction(changeScale, scale);
   }
 
@@ -32,12 +34,16 @@ class GridInstanceMenu extends Component {
     this.dispatchAction(changeOctave, octave);
   }
 
-  handleRootNoteChange(rootNote) {
-    const index = NOTES.indexOf(rootNote);
+  handleRootNoteChange(index, rootNote) {
     this.dispatchAction(changeRootNote, index);
   }
 
-  handleMidiChannelChange(channel) {
+  handleMidiOutputChange(index, output) {
+    var { midiOutputs } = this.props;
+    this.dispatchAction(changeMidiOutputId, midiOutputs[index].id);
+  }
+
+  handleMidiChannelChange(index, channel) {
     this.dispatchAction(changeMidiChannel, channel);
   }
 
@@ -52,8 +58,15 @@ class GridInstanceMenu extends Component {
   }
 
   render() {
+    var { midiOutputs } = this.props;
     var grid = this.props.grids[this.props.grid];
-    var { stepValue, currentScale, currentOctave, rootNote, midiChannel } = grid;
+    var { stepValue, currentScale, currentOctave, rootNote, midiChannel, midiOutputId } = grid;
+
+    var outputNames = midiOutputs.map((output) => {
+      return output.name;
+    });
+
+    var currentOutputName = midiOutputId ? midiOutputs.find(output => output.id === midiOutputId).name : undefined;
 
     return (
       <div className="menu">
@@ -62,6 +75,7 @@ class GridInstanceMenu extends Component {
             <DropdownSelect label="Key / Root Note" currentVal={NOTES[rootNote]} itemsArray={NOTES} onChange={this.handleRootNoteChange} />
             <DropdownSelect label="Scale" currentVal={currentScale} itemsArray={Object.keys(SCALES)} onChange={this.handleScaleChange} />
             <SliderSelect label="Octave" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
+            <DropdownSelect label="MIDI Output" currentVal={currentOutputName} itemsArray={outputNames} onChange={this.handleMidiOutputChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
             <RaisedButton label="Clear Grid" secondary={true} onClick={this.handleClearGrid} />
           </div>
@@ -74,7 +88,8 @@ class GridInstanceMenu extends Component {
 export default connect(
   (state) => {
     return {
-      grids: state.grids
+      grids: state.grids,
+      midiOutputs: state.midiOutputs
     };
   }
 )(GridInstanceMenu);

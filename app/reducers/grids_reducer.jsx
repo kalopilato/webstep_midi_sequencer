@@ -13,6 +13,8 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_
       return updateGrid(state, action, 'columns', columnsReducer);
     case 'CLEAR_GRID':
       return updateGrid(state, action, 'columns', columnsReducer);
+    case 'CHANGE_MIDI_OUTPUT_ID':
+      return updateGrid(state, action, 'midiOutputId', midiOutputReducer);
     case 'CHANGE_MIDI_CHANNEL':
       return updateGrid(state, action, 'midiChannel', midiChannelReducer);
     case 'CHANGE_OCTAVE':
@@ -47,6 +49,15 @@ var columnsReducer = (state = initialisedGrid(), action) => {
                   .concat(state.slice(col + 1));
     case 'CLEAR_GRID':
       return initialisedGrid();
+    default:
+      return state;
+  }
+}
+
+var midiOutputReducer = (state = null, action) => {
+  switch (action.type) {
+    case 'CHANGE_MIDI_OUTPUT_ID':
+      return action.payload;
     default:
       return state;
   }
@@ -113,5 +124,6 @@ const INITIALISED_SEQUENCER_INSTANCE = {
   currentScale: scaleReducer(undefined, {type: ''}),
   currentOctave: octaveReducer(undefined, {type: ''}),
   rootNote: rootNoteReducer(undefined, {type: ''}),
-  midiChannel: midiChannelReducer(undefined, {type: ''})
+  midiOutputId: midiOutputReducer(undefined, {type: ''}),
+  midiChannel: midiChannelReducer(undefined, {type: ''}),
 };

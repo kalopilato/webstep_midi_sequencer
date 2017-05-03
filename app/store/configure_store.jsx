@@ -1,7 +1,7 @@
 import { initialisedGrid } from '../lib/lib';
 import { combineReducers, createStore, compose } from 'redux';
 import { gridsReducer } from 'grids_reducer';
-import { tempoReducer, playingReducer, currentColumnReducer, swingReducer, stepValueReducer } from 'reducers';
+import { tempoReducer, playingReducer, currentColumnReducer, swingReducer, stepValueReducer, midiOutputsReducer } from 'reducers';
 
 export var configure = () => {
   var reducer = combineReducers({
@@ -10,7 +10,8 @@ export var configure = () => {
     stepValue: stepValueReducer,
     playing: playingReducer,
     currentColumn: currentColumnReducer,
-    grids: gridsReducer
+    grids: gridsReducer,
+    midiOutputs: midiOutputsReducer,
   });
 
   var store = createStore(reducer, {}, compose(

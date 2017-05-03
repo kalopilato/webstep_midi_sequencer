@@ -78,6 +78,20 @@ export var changeStepValue = (stepValue, grid) => {
   }
 }
 
+export var changeMidiOutputId = (id, grid) => {
+  return {
+    type: 'CHANGE_MIDI_OUTPUT_ID',
+    payload: id,
+    grid
+  }
+}
+
+export var setMidiOutputs = (outputs) => {
+  return {
+    type: 'SET_MIDI_OUTPUTS',
+    payload: outputs
+  }
+}
 
 export var changeMidiChannel = (channel, grid) => {
   return {

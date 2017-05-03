@@ -28,7 +28,7 @@ class PlaybackControls extends Component {
     this.dispatchAction(changeSwing, swing);
   }
 
-  handleStepValueChange(stepValue) {
+  handleStepValueChange(index, stepValue) {
     this.dispatchAction(changeStepValue, stepValue);
   }
 

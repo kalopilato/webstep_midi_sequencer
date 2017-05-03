@@ -50,3 +50,12 @@ export var stepValueReducer = (state = STEP_VALUES[0], action) => {
       return state;
   }
 }
+
+export var midiOutputsReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_MIDI_OUTPUTS':
+      return action.payload;
+    default:
+      return state;
+  }
+}
