@@ -36,7 +36,6 @@ class Main extends Component {
       } else {
         this.clearSchedule();
       }
-
     }
   }
 
