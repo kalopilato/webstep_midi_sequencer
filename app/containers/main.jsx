@@ -77,19 +77,22 @@ class Main extends Component {
     var { currentScale, currentOctave, rootNote, midiChannel, midiOutputId } = this.props.grids[gridIndex];
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
 
-    let channel = MIDI_CHANNELS[midiChannel];
-    let noteOn = MIDI_MESSAGE_TYPE.NOTE_ON;
-    let noteOff = MIDI_MESSAGE_TYPE.NOTE_OFF;
-    var noteOnByte = parseInt(noteOn + channel, 2);
-    var noteOffByte = parseInt(noteOff + channel, 2);
-    //TODO: error handling when midiOutput is not selected or does not exist
     var midiOutput = this.state.midiAccess.outputs.get(midiOutputId);
 
-    var noteOnMessage = [noteOnByte, note, 0x7f];
-    var noteOffMessage = [noteOffByte, note, 0x7f];
+    //TODO: error handling when midiOutput is not selected or does not exist
+    if(midiOutput) {
+      let channel = MIDI_CHANNELS[midiChannel];
+      let noteOn = MIDI_MESSAGE_TYPE.NOTE_ON;
+      let noteOff = MIDI_MESSAGE_TYPE.NOTE_OFF;
+      var noteOnByte = parseInt(noteOn + channel, 2);
+      var noteOffByte = parseInt(noteOff + channel, 2);
 
-    midiOutput.send(noteOnMessage, playTime);
-    midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
+      var noteOnMessage = [noteOnByte, note, 0x7f];
+      var noteOffMessage = [noteOffByte, note, 0x7f];
+
+      midiOutput.send(noteOnMessage, playTime);
+      midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
+    }
   }
 
   activeRows(column) {
