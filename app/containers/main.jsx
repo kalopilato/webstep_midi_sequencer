@@ -6,6 +6,8 @@ import PlaybackControls from 'playback_controls';
 import GridInstanceMenu from 'grid_instance_menu';
 import GridEditControls from 'grid_edit_controls';
 import AppBar from 'material-ui/AppBar'
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 
@@ -187,8 +189,8 @@ class Main extends Component {
     var tabPanes = [];
     for(let i = 0; i < GRID_COUNT; i++) {
       tabPanes.push(
-        <div>
-          <div key={`grid-pane-${i}`}className="row" style={{position: 'relative'}}>
+        <div key={`grid-pane-${i}`}>
+          <div className="row" style={{position: 'relative'}}>
             <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
               <GridInstanceMenu grid={i} />
             </div>
@@ -214,7 +216,13 @@ class Main extends Component {
     return (
       <div>
         <div>
-          <AppBar title="WebStep" />
+          <AppBar title="WebStep" iconElementRight={
+            <FlatButton href="https://github.com/kalopilato/webstep_midi_sequencer"
+                        target="_blank"
+                        secondary={true}
+                        icon={<FontIcon className="muidocs-icon-custom-github" />}
+            />
+          }/>
         </div>
 
         <div className="row">
