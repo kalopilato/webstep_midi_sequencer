@@ -29,6 +29,8 @@
     "css-loader": "^0.23.1",
     "expect": "^1.20.2",
     "foundation-sites": "^6.2.0",
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4",
     "jquery": "^2.2.1",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.2",
