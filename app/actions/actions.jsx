@@ -32,6 +32,14 @@ export var clearGrid = (grid) => {
   }
 }
 
+export var setGrid = (grid, columns) => {
+  return {
+    type: 'SET_GRID',
+    payload: columns,
+    grid
+  }
+}
+
 export var changeScale = (scale, grid) => {
   return {
     type: 'CHANGE_SCALE',
@@ -98,5 +106,12 @@ export var changeMidiChannel = (channel, grid) => {
     type: 'CHANGE_MIDI_CHANNEL',
     payload: channel,
     grid
+  }
+}
+
+export var setClipboard = (columns) => {
+  return {
+    type: 'SET_CLIPBOARD',
+    payload: columns
   }
 }

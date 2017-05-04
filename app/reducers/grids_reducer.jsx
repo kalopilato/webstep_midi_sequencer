@@ -3,15 +3,11 @@ import { SCALES, MIDI_CHANNELS, GRID_COUNT } from '../constants';
 
 export var gridsReducer = (state = initialisedGrids(), action) => {
   switch (action.type) {
-    case 'ADD_GRID':
-      return [
-        ...state
-      ]
-    case 'REMOVE_GRID':
-      return state;
     case 'TOGGLE_STEP_BUTTON':
       return updateGrid(state, action, 'columns', columnsReducer);
     case 'CLEAR_GRID':
+      return updateGrid(state, action, 'columns', columnsReducer);
+    case 'SET_GRID':
       return updateGrid(state, action, 'columns', columnsReducer);
     case 'CHANGE_MIDI_OUTPUT_ID':
       return updateGrid(state, action, 'midiOutputId', midiOutputReducer);
@@ -57,6 +53,8 @@ var columnsReducer = (state = initialisedGrid(), action) => {
                   .concat(state.slice(col + 1));
     case 'CLEAR_GRID':
       return initialisedGrid();
+    case 'SET_GRID':
+      return action.payload;
     default:
       return state;
   }
