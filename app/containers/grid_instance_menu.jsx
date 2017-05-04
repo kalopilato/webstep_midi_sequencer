@@ -5,7 +5,6 @@ import { changeScale,
          changeOctave,
          changeRootNote,
          changeMidiChannel,
-         clearGrid,
          changeMidiOutputId } from 'actions';
 
 import SliderSelect from 'slider_select';
@@ -22,7 +21,6 @@ class GridInstanceMenu extends Component {
     this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
-    this.handleClearGrid = this.handleClearGrid.bind(this);
     this.handleMidiOutputChange = this.handleMidiOutputChange.bind(this);
   }
 
@@ -45,11 +43,6 @@ class GridInstanceMenu extends Component {
 
   handleMidiChannelChange(index, channel) {
     this.dispatchAction(changeMidiChannel, channel);
-  }
-
-  handleClearGrid() {
-    var { dispatch, grid } = this.props;
-    dispatch(clearGrid(grid));
   }
 
   dispatchAction(action, value) {
@@ -77,7 +70,6 @@ class GridInstanceMenu extends Component {
             <SliderSelect label="Octave" units="" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Output" currentVal={currentOutputName} itemsArray={outputNames} onChange={this.handleMidiOutputChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
-            <RaisedButton label="Clear Grid" secondary={true} onClick={this.handleClearGrid} style={{width: '100%'}}/>
           </div>
         </div>
       </div>

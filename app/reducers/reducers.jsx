@@ -59,3 +59,12 @@ export var midiOutputsReducer = (state = [], action) => {
       return state;
   }
 }
+
+export var clipboardReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_CLIPBOARD':
+      return action.payload;
+    default:
+      return state;
+  }
+}
