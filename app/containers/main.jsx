@@ -5,6 +5,8 @@ import StepMatrix from 'step_matrix';
 import PlaybackControls from 'playback_controls';
 import GridInstanceMenu from 'grid_instance_menu';
 import AppBar from 'material-ui/AppBar'
+import {Tabs, Tab} from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views';
 
 import { incrementColumn, setMidiOutputs } from 'actions';
 
@@ -21,7 +23,8 @@ class Main extends Component {
 
     this.initialiseMIDI();
     this.schedule = this.schedule.bind(this);
-    this.state = { midiAccess: undefined };
+    this.handleTabChange = this.handleTabChange.bind(this);
+    this.state = { midiAccess: undefined, slideIndex: 0 };
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -163,6 +166,12 @@ class Main extends Component {
     stepDuration = (currentColumn % 2 === 0) ? stepDuration * (2 - swingMultiplier) : stepDuration * swingMultiplier;
   }
 
+  handleTabChange(value) {
+    this.setState({
+      slideIndex: value
+    });
+  }
+
   render() {
     return (
       <div>
@@ -176,25 +185,35 @@ class Main extends Component {
           </div>
         </div>
 
-        <div className="row" style={{position: 'relative'}}>
-          <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <GridInstanceMenu grid={0} />
+        <Tabs onChange={this.handleTabChange} value={this.state.slideIndex} >
+          <Tab label="Grid 1" value={0} />
+          <Tab label="Grid 2" value={1} />
+        </Tabs>
+
+        <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleTabChange} >
+
+          <div className="row" style={{position: 'relative'}}>
+            <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <GridInstanceMenu grid={0} />
+            </div>
+
+            <div className="large-9 columns">
+              <StepMatrix grid={0} />
+            </div>
           </div>
 
-          <div className="large-9 columns">
-            <StepMatrix grid={0} />
-          </div>
-        </div>
+          <div className="row" style={{position: 'relative'}}>
+            <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <GridInstanceMenu grid={1} />
+            </div>
 
-        <div className="row" style={{position: 'relative'}}>
-          <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <GridInstanceMenu grid={1} />
+            <div className="large-9 columns">
+              <StepMatrix grid={1} />
+            </div>
           </div>
+        </SwipeableViews>
 
-          <div className="large-9 columns">
-            <StepMatrix grid={1} />
-          </div>
-        </div>
+
       </div>
     )
   }
