@@ -189,10 +189,11 @@ class Main extends Component {
           <Tabs onChange={this.handleTabChange} value={this.state.slideIndex} >
             <Tab label="Grid 1" value={0} />
             <Tab label="Grid 2" value={1} />
+            <Tab label="Grid 2" value={2} />
+            <Tab label="Grid 2" value={3} />
           </Tabs>
 
           <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleTabChange} style={{border: '2px solid #9E9E9E', borderTop: 0}}>
-
             <div className="row" style={{position: 'relative'}}>
               <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <GridInstanceMenu grid={0} />
@@ -210,6 +211,26 @@ class Main extends Component {
 
               <div className="large-9 columns">
                 <StepMatrix grid={1} />
+              </div>
+            </div>
+
+            <div className="row" style={{position: 'relative'}}>
+              <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <GridInstanceMenu grid={2} />
+              </div>
+
+              <div className="large-9 columns">
+                <StepMatrix grid={2} />
+              </div>
+            </div>
+
+            <div className="row" style={{position: 'relative'}}>
+              <div className="large-3 columns" style={{height:'100%', position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <GridInstanceMenu grid={3} />
+              </div>
+
+              <div className="large-9 columns">
+                <StepMatrix grid={3} />
               </div>
             </div>
           </SwipeableViews>

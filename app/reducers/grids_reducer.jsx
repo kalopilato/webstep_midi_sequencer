@@ -1,7 +1,7 @@
 import { initialisedGrid } from '../lib/lib';
 import { SCALES, MIDI_CHANNELS } from '../constants';
 
-export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE], action) => {
+export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE], action) => {
   switch (action.type) {
     case 'ADD_GRID':
       return [
