@@ -21,6 +21,7 @@ class Main extends Component {
 
     this.initialiseMIDI();
     this.schedule = this.schedule.bind(this);
+    this.state = { midiAccess: undefined };
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -77,7 +78,10 @@ class Main extends Component {
     var { currentScale, currentOctave, rootNote, midiChannel, midiOutputId } = this.props.grids[gridIndex];
     var note = MIDI_ROOT + rootNote + (currentOctave * 12) + SCALES[currentScale][noteIndex];
 
-    var midiOutput = this.state.midiAccess.outputs.get(midiOutputId);
+    var midiOutput;
+    if(this.state.midiAccess) {
+      midiOutput = this.state.midiAccess.outputs.get(midiOutputId);
+    }
 
     //TODO: error handling when midiOutput is not selected or does not exist
     if(midiOutput) {
