@@ -60,3 +60,4 @@ export const MIDI_MESSAGE_TYPE = {
 }
 
 export const TOTAL_STEPS = 16;
+export const GRID_COUNT = 4;

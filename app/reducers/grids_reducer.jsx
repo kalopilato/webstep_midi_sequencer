@@ -1,7 +1,7 @@
 import { initialisedGrid } from '../lib/lib';
-import { SCALES, MIDI_CHANNELS } from '../constants';
+import { SCALES, MIDI_CHANNELS, GRID_COUNT } from '../constants';
 
-export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE, INITIALISED_SEQUENCER_INSTANCE], action) => {
+export var gridsReducer = (state = initialisedGrids(), action) => {
   switch (action.type) {
     case 'ADD_GRID':
       return [
@@ -26,6 +26,14 @@ export var gridsReducer = (state = [INITIALISED_SEQUENCER_INSTANCE, INITIALISED_
     default:
       return [...state];
   }
+}
+
+var initialisedGrids = () => {
+  var grids = [];
+  for(let i = 0; i < GRID_COUNT; i++) {
+    grids.push(INITIALISED_SEQUENCER_INSTANCE);
+  }
+  return grids;
 }
 
 var updateGrid = (state, action, keyToUpdate, reducer) => {
