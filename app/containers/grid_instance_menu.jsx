@@ -60,7 +60,7 @@ class GridInstanceMenu extends Component {
   render() {
     var { midiOutputs } = this.props;
     var grid = this.props.grids[this.props.grid];
-    var { stepValue, currentScale, currentOctave, rootNote, midiChannel, midiOutputId } = grid;
+    var { stepValue, currentScale, currentOctave, rootNote, midiChannel, midiOutputId, active } = grid;
 
     var outputNames = midiOutputs.map((output) => {
       return output.name;
@@ -77,7 +77,7 @@ class GridInstanceMenu extends Component {
             <SliderSelect label="Octave" units="" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Output" currentVal={currentOutputName} itemsArray={outputNames} onChange={this.handleMidiOutputChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
-            <Toggle label="Active" defaultToggled={true} onToggle={this.handleActiveStatusChange} style={{width: 250, marginTop: 15}} />
+            <Toggle label="Active" defaultToggled={active} onToggle={this.handleActiveStatusChange} style={{width: 250, marginTop: 15}} />
           </div>
         </div>
       </div>
