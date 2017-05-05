@@ -21,6 +21,8 @@ export var gridsReducer = (state = initialisedGrids(), action) => {
       return updateGrid(state, action, 'currentScale', scaleReducer);
     case 'CHANGE_ROOT_NOTE':
       return updateGrid(state, action, 'rootNote', rootNoteReducer);
+    case 'TOGGLE_GRID_ACTIVE_STATUS':
+      return updateGrid(state, action, 'active', activeStatusReducer);
     default:
       return [...state];
   }
@@ -109,6 +111,15 @@ var rootNoteReducer = (state = 0, action) => {
   }
 }
 
+var activeStatusReducer = (state = true, action) => {
+  switch (action.type) {
+    case 'TOGGLE_GRID_ACTIVE_STATUS':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 var toggleStepButton = (button) => {
   var { active } = button;
   return Object.assign({}, button, {
@@ -136,4 +147,5 @@ const INITIALISED_SEQUENCER_INSTANCE = {
   rootNote: rootNoteReducer(undefined, {type: ''}),
   midiOutputId: midiOutputReducer(undefined, {type: ''}),
   midiChannel: midiChannelReducer(undefined, {type: ''}),
+  active: activeStatusReducer(undefined, {type: ''}),
 };

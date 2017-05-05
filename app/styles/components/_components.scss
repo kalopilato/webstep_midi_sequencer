@@ -78,6 +78,10 @@
 
   &.active {
     background: $sb-active;
+
+    &.inactive-grid {
+      background: $sb-inactive-grid;
+    }
   }
 
   &:hover {

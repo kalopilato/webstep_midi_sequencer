@@ -5,12 +5,13 @@ import { createColumn } from 'actions';
 
 class StepColumn extends Component {
   renderNotes() {
-    var { id, grid } = this.props;
-    var columns = this.props.grids[grid].columns;
+    var { id, grid, grids } = this.props;
+    var currentGrid = grids[grid];
+    var { columns, active: gridActive } = currentGrid;
 
     return columns[id].map((row) => {
       return (
-        <StepButton key={row.row} row={row.row} col={row.col} active={row.active} grid={grid}/>
+        <StepButton key={row.row} row={row.row} col={row.col} active={row.active} grid={grid} gridActive={gridActive}/>
       );
     });
   }

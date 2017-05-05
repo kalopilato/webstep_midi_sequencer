@@ -116,6 +116,14 @@ export var changeMidiChannel = (channel, grid) => {
   }
 }
 
+export var toggleGridActiveStatus = (active, grid) => {
+  return {
+    type: 'TOGGLE_GRID_ACTIVE_STATUS',
+    payload: active,
+    grid
+  }
+}
+
 export var setClipboard = (columns) => {
   return {
     type: 'SET_CLIPBOARD',

@@ -139,12 +139,14 @@ class Main extends Component {
 
       for(let grid = 0; grid < grids.length; grid++){
         var currentGrid = grids[grid];
-        var { columns } = currentGrid;
+        if(currentGrid.active) {
+          var { columns } = currentGrid;
 
-        var col = columns[currentColumn];
-        var rows = this.activeRows(col);
+          var col = columns[currentColumn];
+          var rows = this.activeRows(col);
 
-        this.playNotes(grid, rows, playTime);
+          this.playNotes(grid, rows, playTime);
+        }
       }
       if(nextNoteTime !== lastRenderTime) {
         lastRenderTime = nextNoteTime;

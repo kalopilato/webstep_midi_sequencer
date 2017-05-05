@@ -5,11 +5,13 @@ import { changeScale,
          changeOctave,
          changeRootNote,
          changeMidiChannel,
-         changeMidiOutputId } from 'actions';
+         changeMidiOutputId,
+         toggleGridActiveStatus } from 'actions';
 
 import SliderSelect from 'slider_select';
 import DropdownSelect from 'dropdown_select';
 import RaisedButton from 'material-ui/RaisedButton';
+import Toggle from 'material-ui/Toggle'
 
 import { STEP_VALUES, NOTES, SCALES, MIDI_CHANNELS } from '../constants';
 
@@ -22,6 +24,7 @@ class GridInstanceMenu extends Component {
     this.handleRootNoteChange = this.handleRootNoteChange.bind(this);
     this.handleMidiChannelChange = this.handleMidiChannelChange.bind(this);
     this.handleMidiOutputChange = this.handleMidiOutputChange.bind(this);
+    this.handleActiveStatusChange = this.handleActiveStatusChange.bind(this);
   }
 
   handleScaleChange(index, scale) {
@@ -43,6 +46,10 @@ class GridInstanceMenu extends Component {
 
   handleMidiChannelChange(index, channel) {
     this.dispatchAction(changeMidiChannel, channel);
+  }
+
+  handleActiveStatusChange(event, isInputChecked) {
+    this.dispatchAction(toggleGridActiveStatus, isInputChecked);
   }
 
   dispatchAction(action, value) {
@@ -70,6 +77,7 @@ class GridInstanceMenu extends Component {
             <SliderSelect label="Octave" units="" currentVal={currentOctave} minVal={-3} maxVal={3} onChange={this.handleOctaveChange} />
             <DropdownSelect label="MIDI Output" currentVal={currentOutputName} itemsArray={outputNames} onChange={this.handleMidiOutputChange} />
             <DropdownSelect label="MIDI Channel" currentVal={midiChannel} itemsArray={Object.keys(MIDI_CHANNELS)} onChange={this.handleMidiChannelChange} />
+            <Toggle label="Active" defaultToggled={true} onToggle={this.handleActiveStatusChange} style={{width: 250, marginTop: 15}} />
           </div>
         </div>
       </div>
