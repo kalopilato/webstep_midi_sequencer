@@ -78,10 +78,10 @@
 
   &.active {
     background: $sb-active;
+  }
 
-    &.inactive-grid {
-      background: $sb-inactive-grid;
-    }
+  &.inactive-grid {
+    opacity: 0.4;
   }
 
   &:hover {
