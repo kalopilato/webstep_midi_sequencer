@@ -1,25 +1,25 @@
 import { TOTAL_STEPS } from '../constants';
 
 export function initialisedGrid() {
-  return buildColumns();
+  return buildColumns(() => { return false; });
 }
 
-var buildColumns = () => {
+export function randomisedGrid() {
+  return buildColumns(() => { return Math.random() < 0.1; });
+}
+
+var buildColumns = (defaultButtonStatus) => {
   var columns = [];
-  for(let i = 0; i < TOTAL_STEPS; i++){
-    columns.push(buildColumn(i));
+  for(let col = 0; col < TOTAL_STEPS; col++){
+    var column = [];
+    for(let row = 0; row < 8; row++){
+      column.push({
+        active: defaultButtonStatus(),
+        row,
+        col
+      })
+    }
+    columns.push(column);
   }
   return columns;
-}
-
-var buildColumn = (col) => {
-  var column = [];
-  for(let i = 0; i < 8; i++){
-    column.push({
-      active: false,
-      row: i,
-      col
-    })
-  }
-  return column;
 }

@@ -40,6 +40,13 @@ export var setGrid = (grid, columns) => {
   }
 }
 
+export var randomiseGrid = (grid, columns) => {
+  return {
+    type: 'RANDOMISE_GRID',
+    grid
+  }
+}
+
 export var changeScale = (scale, grid) => {
   return {
     type: 'CHANGE_SCALE',

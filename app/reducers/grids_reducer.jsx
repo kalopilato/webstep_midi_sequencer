@@ -1,4 +1,4 @@
-import { initialisedGrid } from '../lib/lib';
+import { initialisedGrid, randomisedGrid } from '../lib/lib';
 import { SCALES, MIDI_CHANNELS, GRID_COUNT } from '../constants';
 
 export var gridsReducer = (state = initialisedGrids(), action) => {
@@ -8,6 +8,8 @@ export var gridsReducer = (state = initialisedGrids(), action) => {
     case 'CLEAR_GRID':
       return updateGrid(state, action, 'columns', columnsReducer);
     case 'SET_GRID':
+      return updateGrid(state, action, 'columns', columnsReducer);
+    case 'RANDOMISE_GRID':
       return updateGrid(state, action, 'columns', columnsReducer);
     case 'CHANGE_MIDI_OUTPUT_ID':
       return updateGrid(state, action, 'midiOutputId', midiOutputReducer);
@@ -55,6 +57,8 @@ var columnsReducer = (state = initialisedGrid(), action) => {
       return initialisedGrid();
     case 'SET_GRID':
       return action.payload;
+    case 'RANDOMISE_GRID':
+      return randomisedGrid();
     default:
       return state;
   }
