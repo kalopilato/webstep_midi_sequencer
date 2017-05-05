@@ -1,4 +1,4 @@
-import { initialisedGrid, randomisedGrid } from '../lib/lib';
+import { initialisedGrid, randomisedGrid } from '../lib/grid_builder';
 import { SCALES, MIDI_CHANNELS, GRID_COUNT } from '../constants';
 
 export var gridsReducer = (state = initialisedGrids(), action) => {

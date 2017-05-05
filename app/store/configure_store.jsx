@@ -1,4 +1,4 @@
-import { initialisedGrid } from '../lib/lib';
+import { initialisedGrid } from '../lib/grid_builder';
 import { combineReducers, createStore, compose } from 'redux';
 import { gridsReducer } from 'grids_reducer';
 import { tempoReducer, playingReducer, currentColumnReducer, swingReducer, stepValueReducer, midiOutputsReducer, clipboardReducer } from 'reducers';

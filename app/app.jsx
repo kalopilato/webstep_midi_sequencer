@@ -8,6 +8,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTouchTapEvent from 'react-tap-event-plugin';
 
 var store = require('configureStore').configure();
+export default store;
 
 // Load foundation
 $(document).foundation();
