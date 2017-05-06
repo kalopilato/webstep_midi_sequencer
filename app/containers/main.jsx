@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import MIDILooper from '../lib/midi_looper';
+import MIDILooper from '../lib/midi_looper_2';
 
 import StepMatrix from 'step_matrix';
 import PlaybackControls from 'playback_controls';
