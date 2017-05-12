@@ -18,68 +18,20 @@ var nextNoteTime = 0.0;
 var stepDuration;
 var notesInQueue = [];
 
-var timerWorker = null;
+var tickerWorker = null;
 
 var midiAccess = undefined;
 
 export default class MIDILooper {
   constructor() {
-    window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function( callback ){
-            window.setTimeout(callback, 1000 / 60);
-        };
-    })();
-
+    this.initialiseAnimFrame();
+    this.initialiseAudioContext();
+    this.initialiseTickerWorker();
     this.initialiseMIDI();
 
-    audioContext = new AudioContext();
-
-    var TickerWorker = require("worker-loader!./ticker.worker");
-    timerWorker = new TickerWorker();
-    timerWorker.onmessage = (e) => {
-      if(e.data == "tick") {
-        this.scheduler();
-      }
-      timerWorker.postMessage({ "interval": lookAheadTime });
-    }
-
     this.updateCurrentColumn = this.updateCurrentColumn.bind(this);
+
     requestAnimFrame(this.updateCurrentColumn);
-  }
-
-  initialiseMIDI() {
-    if(navigator.requestMIDIAccess) {
-      navigator.requestMIDIAccess().then(
-        this.midiSuccess.bind(this),
-        () => { alert("MIDI Error: Access Denied")}
-      );
-    } else {
-      alert("Your browser does not support the Web MIDI API :(");
-    }
-  }
-
-  midiSuccess(midiAccess) {
-    var outputs = midiAccess.outputs;
-
-    if(outputs.size < 1){
-      return alert("You have no MIDI devices connected");
-    }
-
-    var midiOutputs = [];
-    for(let output of outputs.values()) { midiOutputs.push(output) };
-
-    var outputsList = [];
-    for(let output of midiOutputs) {
-      outputsList.push({ id: output.id, name: `${output.manufacturer} ${output.name}`});
-    }
-
-    store.dispatch(setMidiOutputs(outputsList));
-    this.midiAccess = midiAccess;
   }
 
   play() {
@@ -88,12 +40,57 @@ export default class MIDILooper {
 
     nextStep = store.getState().currentColumn;
     lastStepDrawn = nextStep === 0 ? TOTAL_STEPS - 1 : nextStep - 1;
-    timerWorker.postMessage('start');
+    tickerWorker.postMessage('start');
     this.updateStepDuration();
   }
 
   stop() {
-    timerWorker.postMessage('stop');
+    tickerWorker.postMessage('stop');
+  }
+
+  scheduler() {
+    while (nextNoteTime < audioContext.now() + scheduleAheadTime ) {
+      this.scheduleNotes();
+      this.advanceNoteTime();
+    }
+  }
+
+  scheduleNotes() {
+    var { grids } = store.getState();
+    notesInQueue.push( { step: nextStep, time: nextNoteTime } );
+
+    for(let grid = 0; grid < grids.length; grid++){
+      var currentGrid = grids[grid];
+      if(currentGrid.active) {
+        var { columns } = currentGrid;
+
+        var col = columns[nextStep];
+        var rows = this.activeRows(col);
+
+        // Normalise next note time against Window Performance API clock
+        var lag = window.performance.now() - audioContext.now();
+        var playTime = nextNoteTime + lag + 20.0;
+
+        this.playNotes(grid, rows, playTime);
+      }
+    }
+  }
+
+  advanceNoteTime() {
+    nextStep++;
+    this.updateStepDuration();
+    nextNoteTime += stepDuration;
+    if(nextStep === TOTAL_STEPS) {
+      nextStep = 0;
+    }
+  }
+
+  playNotes(gridIndex, rows, playTime){
+    var i;
+    for(i = 0; i < rows.length; i++){
+      var row = rows[i];
+      this.sendNoteOn(gridIndex, row, playTime);
+    }
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
@@ -139,51 +136,6 @@ export default class MIDILooper {
     return rows;
   }
 
-  playNotes(gridIndex, rows, playTime){
-    var i;
-    for(i = 0; i < rows.length; i++){
-      var row = rows[i];
-      this.sendNoteOn(gridIndex, row, playTime);
-    }
-  }
-
-  scheduler() {
-    while (nextNoteTime < audioContext.currentTime * 1000.0 + scheduleAheadTime ) {
-      this.scheduleNotes();
-      this.advanceNoteTime();
-    }
-  }
-
-  scheduleNotes() {
-    var { grids } = store.getState();
-    notesInQueue.push( { step: nextStep, time: nextNoteTime } );
-
-    for(let grid = 0; grid < grids.length; grid++){
-      var currentGrid = grids[grid];
-      if(currentGrid.active) {
-        var { columns } = currentGrid;
-
-        var col = columns[nextStep];
-        var rows = this.activeRows(col);
-
-        // Normalise next note time against Window Performance API clock
-        var lag = window.performance.now() - audioContext.currentTime * 1000.0;
-        var playTime = nextNoteTime + lag + 20.0;
-
-        this.playNotes(grid, rows, playTime);
-      }
-    }
-  }
-
-  advanceNoteTime() {
-    nextStep++;
-    this.updateStepDuration();
-    nextNoteTime += stepDuration;
-    if(nextStep === TOTAL_STEPS) {
-      nextStep = 0;
-    }
-  }
-
   updateStepDuration() {
     let { tempo, swing, stepValue } = store.getState();
     let swingMultiplier = swing / 50;
@@ -209,5 +161,70 @@ export default class MIDILooper {
     }
 
     requestAnimFrame(this.updateCurrentColumn);
+  }
+
+  /*
+  *   INITIALISATION METHODS
+  */
+
+  initialiseAnimFrame() {
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+  }
+
+  initialiseAudioContext() {
+    audioContext = new AudioContext();
+    audioContext.now = () => {
+      return audioContext.currentTime * 1000.0;
+    }
+  }
+
+  initialiseTickerWorker() {
+    var TickerWorker = require("worker-loader!./ticker.worker");
+    tickerWorker = new TickerWorker();
+    tickerWorker.onmessage = (e) => {
+      if(e.data == "tick") {
+        this.scheduler();
+      }
+      tickerWorker.postMessage({ "interval": lookAheadTime });
+    }
+  }
+
+  initialiseMIDI() {
+    if(navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then(
+        this.midiSuccess.bind(this),
+        () => { alert("MIDI Error: Access Denied")}
+      );
+    } else {
+      alert("Your browser does not support the Web MIDI API :(");
+    }
+  }
+
+  midiSuccess(midiAccess) {
+    var outputs = midiAccess.outputs;
+
+    if(outputs.size < 1){
+      return alert("You have no MIDI devices connected");
+    }
+
+    var midiOutputs = [];
+    for(let output of outputs.values()) { midiOutputs.push(output) };
+
+    var outputsList = [];
+    for(let output of midiOutputs) {
+      outputsList.push({ id: output.id, name: `${output.manufacturer} ${output.name}`});
+    }
+
+    store.dispatch(setMidiOutputs(outputsList));
+    this.midiAccess = midiAccess;
   }
 }
