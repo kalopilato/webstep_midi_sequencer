@@ -1,18 +1,56 @@
+/*
+*   Based on the `metronome` in Chris Wilson's Metronome app: `https://github.com/cwilso/metronome`
+*/
 import { incrementColumn, setMidiOutputs } from 'actions';
 import store from '../app';
-
-import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE, GRID_COUNT } from '../constants';
+import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE, TOTAL_STEPS } from '../constants';
 
 const MIDI_ROOT = 60;
-const MINUTE = 60000;
+const MINUTE = 60;
 
-var nextNoteTime, startTime, lastRenderTime, requestId, stepDuration;
+var startTime;
+var nextStep;
+var lastStepDrawn;
+var audioContext = null;
+var lookahead = 10.0;
+var scheduleAheadTime = 0.1;
+var nextNoteTime = 0.0;
+var stepDuration;
+var notesInQueue = [];
+
+var timerWorker = null;
+
 var midiAccess = undefined;
 
 export default class MIDILooper {
   constructor() {
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
     this.initialiseMIDI();
-    this.schedule = this.schedule.bind(this);
+
+    audioContext = new AudioContext();
+
+
+    var TickerWorker = require("worker-loader!./ticker.worker");
+    timerWorker = new TickerWorker();
+    timerWorker.onmessage = (e) => {
+      if(e.data == "tick") {
+        this.scheduler();
+      }
+      timerWorker.postMessage({ "interval": lookahead });
+    }
+
+    this.updateCurrentColumn = this.updateCurrentColumn.bind(this);
+    requestAnimFrame(this.updateCurrentColumn);
   }
 
   initialiseMIDI() {
@@ -46,16 +84,17 @@ export default class MIDILooper {
   }
 
   play() {
-    nextNoteTime = 0.0;
-    startTime = window.performance.now() + 0.005;
-    lastRenderTime = -1;
+    startTime = window.performance.now();
+    nextNoteTime = audioContext.currentTime;
+
+    nextStep = store.getState().currentColumn;
+    lastStepDrawn = nextStep === 0 ? TOTAL_STEPS - 1 : nextStep - 1;
+    timerWorker.postMessage('start');
     this.updateStepDuration();
-    this.schedule();
-    console.log("start playing");
   }
 
   stop() {
-    this.clearSchedule();
+    timerWorker.postMessage('stop');
   }
 
   // See (http://www.ccarh.org/courses/253/handout/midiprotocol/) for more info
@@ -79,9 +118,13 @@ export default class MIDILooper {
 
       var noteOnMessage = [noteOnByte, note, 0x7f];
       var noteOffMessage = [noteOffByte, note, 0x7f];
-
+      if(playTime < window.performance.now()) {
+        console.log('!!!!!!!!!!!!!!');
+      }
+      // console.log('scheduling note on at:', playTime * 1000.0 + 1000.0, 'note off at:', playTime * 1000.0 + 1000.0 + stepDuration, 'currentTime:', window.performance.now());
+      // console.log('audioContext lag behind window.performance.now', audioContext.currentTime * 1000.0 - window.performance.now());
       midiOutput.send(noteOnMessage, playTime);
-      midiOutput.send(noteOffMessage, playTime + stepDuration * 0.9);
+      midiOutput.send(noteOffMessage, playTime + stepDuration);
     }
   }
 
@@ -106,48 +149,67 @@ export default class MIDILooper {
     }
   }
 
-  clearSchedule(){
-    window.cancelAnimationFrame(requestId);
-  }
-
-  schedule() {
-    var currentTime = window.performance.now() - startTime;
-
-    while (nextNoteTime < currentTime + 0.200) {
-      var { currentColumn, grids } = store.getState();
-      var playTime = nextNoteTime + startTime;
-
-      for(let grid = 0; grid < grids.length; grid++){
-        var currentGrid = grids[grid];
-        if(currentGrid.active) {
-          var { columns } = currentGrid;
-
-          var col = columns[currentColumn];
-          var rows = this.activeRows(col);
-
-          this.playNotes(grid, rows, playTime);
-        }
-      }
-      if(nextNoteTime !== lastRenderTime) {
-        lastRenderTime = nextNoteTime;
-        store.dispatch(incrementColumn());
-      }
+  scheduler() {
+    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
+      this.scheduleNotes();
       this.advanceNoteTime();
     }
+  }
 
-    requestId = window.requestAnimationFrame(this.schedule);
+  scheduleNotes() {
+    var { grids } = store.getState();
+    notesInQueue.push( { step: nextStep, time: nextNoteTime } );
+
+    for(let grid = 0; grid < grids.length; grid++){
+      var currentGrid = grids[grid];
+      if(currentGrid.active) {
+        var { columns } = currentGrid;
+
+        var col = columns[nextStep];
+        var rows = this.activeRows(col);
+
+        // Normalise next note time against Window Performance API clock
+        var lag = window.performance.now() - audioContext.currentTime * 1000.0;
+        var playTime = nextNoteTime * 1000.0 + lag + 50.0;
+
+        this.playNotes(grid, rows, playTime);
+      }
+    }
   }
 
   advanceNoteTime() {
+    nextStep++;
     this.updateStepDuration();
     nextNoteTime += stepDuration;
+    if(nextStep === TOTAL_STEPS) {
+      nextStep = 0;
+    }
   }
 
   updateStepDuration() {
-    let { tempo, swing, stepValue, currentColumn } = store.getState();
+    let { tempo, swing, stepValue } = store.getState();
     let swingMultiplier = swing / 50;
 
     stepDuration = (MINUTE / tempo) * (4 * eval(stepValue));
-    stepDuration = (currentColumn % 2 === 0) ? stepDuration * (2 - swingMultiplier) : stepDuration * swingMultiplier;
+    stepDuration = (nextStep % 2 === 0) ? stepDuration * (2 - swingMultiplier) : stepDuration * swingMultiplier;
+  }
+
+  updateCurrentColumn() {
+    var currentStep = lastStepDrawn;
+    // var currentTime = audioContext.currentTime;
+    var currentTime = window.performance.now()
+
+    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
+        currentStep = notesInQueue[0].step;
+        notesInQueue.splice(0,1);   // remove note from queue
+    }
+
+    // We only need to draw if the note has moved.
+    if (lastStepDrawn != currentStep) {
+        lastStepDrawn = currentStep;
+        store.dispatch(incrementColumn());
+    }
+
+    requestAnimFrame(this.updateCurrentColumn);
   }
 }
