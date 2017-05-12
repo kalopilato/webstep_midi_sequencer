@@ -13,7 +13,7 @@ var nextStep;
 var lastStepDrawn;
 var audioContext = null;
 var lookahead = 10.0;
-var scheduleAheadTime = 0.1;
+var scheduleAheadTime = 100.0;
 var nextNoteTime = 0.0;
 var stepDuration;
 var notesInQueue = [];
@@ -38,7 +38,6 @@ export default class MIDILooper {
     this.initialiseMIDI();
 
     audioContext = new AudioContext();
-
 
     var TickerWorker = require("worker-loader!./ticker.worker");
     timerWorker = new TickerWorker();
@@ -85,7 +84,7 @@ export default class MIDILooper {
 
   play() {
     startTime = window.performance.now();
-    nextNoteTime = audioContext.currentTime;
+    nextNoteTime = startTime;
 
     nextStep = store.getState().currentColumn;
     lastStepDrawn = nextStep === 0 ? TOTAL_STEPS - 1 : nextStep - 1;
@@ -121,10 +120,9 @@ export default class MIDILooper {
       if(playTime < window.performance.now()) {
         console.log('!!!!!!!!!!!!!!');
       }
-      // console.log('scheduling note on at:', playTime * 1000.0 + 1000.0, 'note off at:', playTime * 1000.0 + 1000.0 + stepDuration, 'currentTime:', window.performance.now());
-      // console.log('audioContext lag behind window.performance.now', audioContext.currentTime * 1000.0 - window.performance.now());
+
       midiOutput.send(noteOnMessage, playTime);
-      midiOutput.send(noteOffMessage, playTime + stepDuration);
+      midiOutput.send(noteOffMessage, (playTime + stepDuration));
     }
   }
 
@@ -150,7 +148,7 @@ export default class MIDILooper {
   }
 
   scheduler() {
-    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
+    while (nextNoteTime < audioContext.currentTime * 1000.0 + scheduleAheadTime ) {
       this.scheduleNotes();
       this.advanceNoteTime();
     }
@@ -170,7 +168,7 @@ export default class MIDILooper {
 
         // Normalise next note time against Window Performance API clock
         var lag = window.performance.now() - audioContext.currentTime * 1000.0;
-        var playTime = nextNoteTime * 1000.0 + lag + 50.0;
+        var playTime = nextNoteTime + lag + 20.0;
 
         this.playNotes(grid, rows, playTime);
       }
@@ -191,12 +189,12 @@ export default class MIDILooper {
     let swingMultiplier = swing / 50;
 
     stepDuration = (MINUTE / tempo) * (4 * eval(stepValue));
-    stepDuration = (nextStep % 2 === 0) ? stepDuration * (2 - swingMultiplier) : stepDuration * swingMultiplier;
+    stepDuration = (nextStep % 2 === 0) ? stepDuration * (2.0 - swingMultiplier) : stepDuration * swingMultiplier;
+    stepDuration = stepDuration * 1000.0
   }
 
   updateCurrentColumn() {
     var currentStep = lastStepDrawn;
-    // var currentTime = audioContext.currentTime;
     var currentTime = window.performance.now()
 
     while (notesInQueue.length && notesInQueue[0].time < currentTime) {
