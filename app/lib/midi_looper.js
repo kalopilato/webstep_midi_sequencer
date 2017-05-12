@@ -12,8 +12,8 @@ var startTime;
 var nextStep;
 var lastStepDrawn;
 var audioContext = null;
-var lookahead = 10.0;
-var scheduleAheadTime = 100.0;
+var lookAheadTime = 10.0;
+var scheduleAheadTime = 30.0;
 var nextNoteTime = 0.0;
 var stepDuration;
 var notesInQueue = [];
@@ -45,7 +45,7 @@ export default class MIDILooper {
       if(e.data == "tick") {
         this.scheduler();
       }
-      timerWorker.postMessage({ "interval": lookahead });
+      timerWorker.postMessage({ "interval": lookAheadTime });
     }
 
     this.updateCurrentColumn = this.updateCurrentColumn.bind(this);
