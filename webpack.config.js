@@ -17,14 +17,13 @@ module.exports = {
     })
   ],
   output: {
-    path: __dirname,
-    filename: './public/bundle.js'
+    path: __dirname + '/public/',
+    filename: 'bundle.js'
   },
   worker: {
     output: {
-      path: __dirname,
-      filename: "./ticker.worker.js",
-      chunkFilename: "./[id].ticker.worker.js"
+      filename: "ticker.worker.js",
+      chunkFilename: "[id].ticker.worker.js"
     }
   },
   resolve: {
