@@ -13,8 +13,7 @@ export const NOTES = ['C',
 
 export const STEP_VALUES = ['1/4',
                             '1/8',
-                            '1/16',
-                            '1/32']
+                            '1/16']
 
 export const SCALES = {
   HARMONIC_MINOR:     [0, 2, 3, 5, 7, 8, 11, 12],

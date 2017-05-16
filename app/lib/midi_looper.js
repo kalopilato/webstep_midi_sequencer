@@ -8,15 +8,13 @@ import { SCALES, MIDI_CHANNELS, MIDI_MESSAGE_TYPE, TOTAL_STEPS } from '../consta
 const MIDI_ROOT = 60;
 const MINUTE = 60;
 
-var startTime;
 var nextStep;
 var lastStepDrawn;
-var audioContext = null;
-var lookAheadTime = 10.0;
-var scheduleAheadTime = 30.0;
+var lookAheadTime = 25.0;
+var scheduleAheadTime = 100.0;
 var nextNoteTime = 0.0;
 var stepDuration;
-var notesInQueue = [];
+var stepsInQueue = [];
 
 var tickerWorker = null;
 
@@ -25,7 +23,6 @@ var midiAccess = undefined;
 export default class MIDILooper {
   constructor() {
     this.initialiseAnimFrame();
-    this.initialiseAudioContext();
     this.initialiseTickerWorker();
     this.initialiseMIDI();
 
@@ -35,8 +32,7 @@ export default class MIDILooper {
   }
 
   play() {
-    startTime = window.performance.now();
-    nextNoteTime = startTime;
+    nextNoteTime = window.performance.now();
 
     nextStep = store.getState().currentColumn;
     lastStepDrawn = nextStep === 0 ? TOTAL_STEPS - 1 : nextStep - 1;
@@ -49,7 +45,7 @@ export default class MIDILooper {
   }
 
   scheduler() {
-    while (nextNoteTime < audioContext.now() + scheduleAheadTime ) {
+    while (nextNoteTime < window.performance.now() + scheduleAheadTime ) {
       this.scheduleNotes();
       this.advanceNoteTime();
     }
@@ -57,21 +53,20 @@ export default class MIDILooper {
 
   scheduleNotes() {
     var { grids } = store.getState();
-    notesInQueue.push( { step: nextStep, time: nextNoteTime } );
+
+    // Normalise next note time against Window Performance API clock
+    // var playTime = this.translateAudioTimeToWindowTime(nextNoteTime);
+    console.log('PlayTime:', nextNoteTime);
+    stepsInQueue.push( { step: nextStep, time: nextNoteTime } );
 
     for(let grid = 0; grid < grids.length; grid++){
       var currentGrid = grids[grid];
       if(currentGrid.active) {
         var { columns } = currentGrid;
-
         var col = columns[nextStep];
         var rows = this.activeRows(col);
 
-        // Normalise next note time against Window Performance API clock
-        var lag = window.performance.now() - audioContext.now();
-        var playTime = nextNoteTime + lag + 20.0;
-
-        this.playNotes(grid, rows, playTime);
+        this.playNotes(grid, rows, nextNoteTime + 50.0);
       }
     }
   }
@@ -115,11 +110,11 @@ export default class MIDILooper {
       var noteOnMessage = [noteOnByte, note, 0x7f];
       var noteOffMessage = [noteOffByte, note, 0x7f];
       if(playTime < window.performance.now()) {
-        console.log('!!!!!!!!!!!!!!');
+        console.log('Next note playTime is in the past!!!');
       }
 
       midiOutput.send(noteOnMessage, playTime);
-      midiOutput.send(noteOffMessage, (playTime + stepDuration));
+      midiOutput.send(noteOffMessage, (playTime + stepDuration * 0.9));
     }
   }
 
@@ -147,11 +142,11 @@ export default class MIDILooper {
 
   updateCurrentColumn() {
     var currentStep = lastStepDrawn;
-    var currentTime = window.performance.now()
+    var currentTime = window.performance.now();
 
-    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
-        currentStep = notesInQueue[0].step;
-        notesInQueue.splice(0,1);   // remove note from queue
+    while (stepsInQueue.length && stepsInQueue[0].time < currentTime) {
+        currentStep = stepsInQueue[0].step;
+        stepsInQueue.splice(0,1);   // remove note from queue
     }
 
     // We only need to draw if the note has moved.
@@ -175,7 +170,7 @@ export default class MIDILooper {
         window.oRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
         function( callback ){
-            window.setTimeout(callback, 1000 / 60);
+            window.setTimeout(callback, 1000.0 / 60.0);
         };
     })();
   }
