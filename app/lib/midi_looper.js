@@ -54,9 +54,6 @@ export default class MIDILooper {
   scheduleNotes() {
     var { grids } = store.getState();
 
-    // Normalise next note time against Window Performance API clock
-    // var playTime = this.translateAudioTimeToWindowTime(nextNoteTime);
-    console.log('PlayTime:', nextNoteTime);
     stepsInQueue.push( { step: nextStep, time: nextNoteTime } );
 
     for(let grid = 0; grid < grids.length; grid++){
@@ -146,7 +143,8 @@ export default class MIDILooper {
 
     while (stepsInQueue.length && stepsInQueue[0].time < currentTime) {
         currentStep = stepsInQueue[0].step;
-        stepsInQueue.splice(0,1);   // remove note from queue
+        // Remove note from queue
+        stepsInQueue.splice(0,1);
     }
 
     // We only need to draw if the note has moved.
