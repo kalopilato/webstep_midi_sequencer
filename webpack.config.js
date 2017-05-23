@@ -17,8 +17,14 @@ module.exports = {
     })
   ],
   output: {
-    path: __dirname,
-    filename: './public/bundle.js'
+    path: __dirname + '/public/',
+    filename: 'bundle.js'
+  },
+  worker: {
+    output: {
+      filename: "ticker.worker.js",
+      chunkFilename: "[id].ticker.worker.js"
+    }
   },
   resolve: {
     root: __dirname,
@@ -26,7 +32,7 @@ module.exports = {
       'node_modules',
       './app/components',
       './app/containers',
-      './app/reducers'
+      './app/reducers',
     ],
     alias: {
       app: 'app',
