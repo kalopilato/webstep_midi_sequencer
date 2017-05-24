@@ -76,8 +76,20 @@
   cursor: pointer;
   margin: 5px;
 
-  &.active {
-    background: $sb-active;
+  &.active-0 {
+    background: $sb-active-0;
+  }
+
+  &.active-1 {
+    background: $sb-active-1;
+  }
+
+  &.active-2 {
+    background: $sb-active-2;
+  }
+
+  &.active-3 {
+    background: $sb-active-3;
   }
 
   &.inactive-grid {

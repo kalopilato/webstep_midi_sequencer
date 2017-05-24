@@ -13,8 +13,8 @@ class StepButton extends Component {
   }
 
   classNames() {
-    var { active, gridActive } = this.props;
-    return `step-button ${active ? 'active' : ''} ${gridActive ? '' : 'inactive-grid'}`;
+    var { active, gridActive, grid } = this.props;
+    return `step-button ${active ? 'active-' + grid : ''} ${gridActive ? '' : 'inactive-grid'}`;
   }
 
   onToggleStep() {
