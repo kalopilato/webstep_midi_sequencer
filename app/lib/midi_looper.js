@@ -33,9 +33,9 @@ export default class MIDILooper {
 
   play() {
     nextNoteTime = window.performance.now();
-
     nextStep = store.getState().currentColumn;
     lastStepDrawn = nextStep === 0 ? TOTAL_STEPS - 1 : nextStep - 1;
+
     tickerWorker.postMessage('start');
     this.updateStepDuration();
   }
@@ -111,7 +111,7 @@ export default class MIDILooper {
       }
 
       midiOutput.send(noteOnMessage, playTime);
-      midiOutput.send(noteOffMessage, (playTime + stepDuration * 0.9));
+      midiOutput.send(noteOffMessage, (playTime + stepDuration * 0.8));
     }
   }
 
