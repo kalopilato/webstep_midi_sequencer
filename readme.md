@@ -1,7 +1,7 @@
 # WebStep
 
 WebStep is a browser based, grid style MIDI step sequencer. The intended purpose of this app is to control external hardware synthesizers or samplers, it doesn't currently have a built in audio engine so you'll need at least one MIDI output device connected to do anything useful. That being said, WebStep should work fine with _any_ MIDI enabled synthesizer/sampler that's visible to your operating system.
-If you don't have any MIDI hardware to control you can route [WebStep to a software synthesizer](#routing-to-a-software-synthesizer) via a virtual MIDI port.
+If you don't have any MIDI hardware to control you can [route WebStep to a software synthesizer](#routing-to-a-software-synthesizer) via a virtual MIDI port.
 
 This project is a work in progress and is really just a learning exercise as I fumble my way through learning about a few things I'm interested in:
 * React
